@@ -22,7 +22,7 @@ corr_mtx = abs(data.corr())
 fig = figure(figsize=(cols*HEIGHT, rows*HEIGHT))
 heatmap(abs(corr_mtx), xticklabels=corr_mtx.columns, yticklabels=corr_mtx.columns, annot=True, cmap='Blues')
 title('Correlation analysis')
-savefig(f'images/correlation_analysis_drought.png')
+savefig(f'images/sparsity/correlation_analysis_drought.png')
 show()
 
 
@@ -35,7 +35,7 @@ for i in range(len(numeric_vars)):
         axs[i, j-1].set_xlabel(var1)
         axs[i, j-1].set_ylabel(var2)
         axs[i, j-1].scatter(data[var1], data[var2])
-savefig(f'images/sparsity_study_drought_numeric.png')
+savefig(f'images/sparsity/sparsity_study_drought_numeric.png')
 show()
 
 
@@ -52,7 +52,7 @@ corr_mtx_2 = abs(data_2.corr())
 fig = figure(figsize=(cols*HEIGHT, rows*HEIGHT))
 heatmap(abs(corr_mtx_2), xticklabels=corr_mtx_2.columns, yticklabels=corr_mtx_2.columns, annot=True, cmap='Blues')
 title('Correlation analysis')
-savefig(f'images/correlation_analysis_diabetic.png')
+savefig(f'images/sparsity/correlation_analysis_diabetic.png')
 show()
 
 
@@ -65,5 +65,5 @@ for i in range(len(numeric_vars)):
         axs[i, j-1].set_xlabel(var1)
         axs[i, j-1].set_ylabel(var2)
         axs[i, j-1].scatter(data_2[var1], data_2[var2])
-savefig(f'images/sparsity_study_diabetic_numeric.png')
+savefig(f'images/sparsity/sparsity_study_diabetic_numeric.png')
 show()

@@ -39,5 +39,17 @@ def distribution(datadF):
     savefig('images/distribution/single_boxplots_'+data_name+'.png')
     show()
 
+    fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
+    i, j = 0, 0
+    for n in range(len(numeric_vars)):
+        axs[i, j].set_title('Histogram for %s'%numeric_vars[n])
+        axs[i, j].set_xlabel(numeric_vars[n])
+        axs[i, j].set_ylabel("nr records")
+        axs[i, j].hist(datadF[numeric_vars[n]].dropna().values, 'auto')
+        i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
+    savefig('images/distribution/single_histograms_numeric_'+data_name+'.png')
+    show()
 
 distribution(data_drought)
+
+
