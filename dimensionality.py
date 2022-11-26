@@ -61,3 +61,17 @@ figure(figsize=(4,2))
 bar_chart(list(counts.keys()), list(counts.values()), title='Nr of variables per type')
 savefig('images/dimensionality/NrVarPerType/diabetic_data.png')
 show()
+
+from matplotlib.pyplot import figure, savefig, show
+from ds_charts import bar_chart
+mv = {}
+for var in data:
+    nr = data[var].isna().sum()
+    if nr > 0:
+        mv[var] = nr
+
+figure()
+bar_chart(list(mv.keys()), list(mv.values()), title='Nr of missing values per variable',
+            xlabel='variables', ylabel='nr missing values', rotation=True)
+savefig('images/dimensionality/nrMissValPerVar/diabetic_data.png')
+show()
