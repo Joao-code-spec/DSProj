@@ -58,7 +58,7 @@ def set_locators(xvalues: list, ax: Axes = None, rotation: bool=False):
         return None
     elif isinstance(xvalues[0], str):
         if rotation:
-            ax.set_xticklabels(xvalues, rotation='90', fontsize='small', ha='center')
+            ax.set_xticklabels(xvalues, rotation=90, fontsize='small', ha='center')
         else:
             ax.set_xticklabels(xvalues, fontsize='small', ha='center')
         return None
@@ -239,6 +239,8 @@ def get_variable_types(df: DataFrame) -> dict:
             variable_types['Binary'].append(c)
             df[c].astype('bool')
         elif df[c].dtype == 'datetime64':
+            variable_types['Date'].append(c)
+        elif df[c].dtype == 'datetime64[ns]':
             variable_types['Date'].append(c)
         elif df[c].dtype == 'int':
             variable_types['Numeric'].append(c)
