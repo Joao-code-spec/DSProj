@@ -7,25 +7,38 @@ from ds_charts import get_variable_types, choose_grid, HEIGHT
 
 register_matplotlib_converters() 
 drought = 'data/drought.csv'
+diabetic = 'data/diabetic_data.csv'
 
 data_drought = read_csv(drought, index_col='date', na_values='', parse_dates=True, infer_datetime_format=True) #converte de csv para dataFrame
-summary5 = data_drought.describe()
+data_diabetic= read_csv(diabetic, index_col=['encounter_id', 'patient_nbr'], na_values='?') #converte de csv para dataFrame
 
-numeric_vars = get_variable_types(data_drought)['Numeric']
-if [] == numeric_vars:
-    raise ValueError('There are no numeric variables.')
+def distribution(datadF):
+    if datadF.equals(data_drought):
+        data_name="Drought"
+    elif datadF.equals(data_diabetic):
+        data_name="Diabetes"
 
-data_drought.boxplot(rot=45)
-savefig('images/distribution/global_boxplot.png')
+    summary5 = datadF.describe()
 
-rows, cols = choose_grid(len(numeric_vars))
+    numeric_vars = get_variable_types(datadF)['Numeric']
+    if [] == numeric_vars:
+        raise ValueError('There are no numeric variables.')
 
-fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
-i, j = 0, 0
+    datadF.boxplot(rot=45)
+    savefig('images/distribution/global_boxplot_'+data_name+'.png')
 
-for n in range(len(numeric_vars)):
-    axs[i, j].set_title('Boxplot for %s'%numeric_vars[n])
-    axs[i, j].boxplot(data_drought[numeric_vars[n]].dropna().values)
-    i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
-savefig('images/distribution/single_boxplots.png')
-show()
+    rows, cols = choose_grid(len(numeric_vars))
+
+    fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
+    i, j = 0, 0
+
+    for n in range(len(numeric_vars)):
+        print(n)
+        axs[i, j].set_title('Boxplot for %s'%numeric_vars[n])
+        axs[i, j].boxplot(datadF[numeric_vars[n]].dropna().values)
+        i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
+    savefig('images/distribution/single_boxplots_'+data_name+'.png')
+    show()
+
+
+distribution(data_drought)
