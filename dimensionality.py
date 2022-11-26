@@ -6,8 +6,8 @@ register_matplotlib_converters()
 # filename = 'data/algae.csv'
 # data = read_csv(filename, index_col='date', na_values='', parse_dates=True, infer_datetime_format=True)
 
-filename = 'data/diabetic_data.csv'
-data = read_csv(filename, na_values='?')
+filename = 'data/drought.csv'
+data = read_csv(filename, na_values='?',parse_dates=['date'])
 
 data.shape
 
@@ -17,7 +17,7 @@ from ds_charts import bar_chart
 figure(figsize=(4,2))
 values = {'nr records': data.shape[0], 'nr variables': data.shape[1]}
 bar_chart(list(values.keys()), list(values.values()), title='Nr of records vs nr variables')
-savefig('images/dimensionality/nrRecordsVar/diabetic_data.png')
+savefig('images/dimensionality/nrRecordsVar/drought.png')
 show()
 
 
@@ -34,6 +34,8 @@ def get_variable_types(df: DataFrame) -> dict:
             variable_types['Binary'].append(c)
             df[c].astype('bool')
         elif df[c].dtype == 'datetime64':
+            variable_types['Date'].append(c)
+        elif df[c].dtype == 'datetime64[ns]':
             variable_types['Date'].append(c)
         elif df[c].dtype == 'int':
             variable_types['Numeric'].append(c)
@@ -59,7 +61,7 @@ for tp in variable_types.keys():
     counts[tp] = len(variable_types[tp])
 figure(figsize=(4,2))
 bar_chart(list(counts.keys()), list(counts.values()), title='Nr of variables per type')
-savefig('images/dimensionality/NrVarPerType/diabetic_data.png')
+savefig('images/dimensionality/NrVarPerType/drought.png')
 show()
 
 from matplotlib.pyplot import figure, savefig, show
@@ -69,9 +71,10 @@ for var in data:
     nr = data[var].isna().sum()
     if nr > 0:
         mv[var] = nr
-
-figure()
+if len(mv)<1:
+    mv["NA"] = 0
+figure(figsize=(4,4))
 bar_chart(list(mv.keys()), list(mv.values()), title='Nr of missing values per variable',
             xlabel='variables', ylabel='nr missing values', rotation=True)
-savefig('images/dimensionality/nrMissValPerVar/diabetic_data.png')
+savefig('images/dimensionality/nrMissValPerVar/drought.png')
 show()

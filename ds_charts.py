@@ -240,6 +240,8 @@ def get_variable_types(df: DataFrame) -> dict:
             df[c].astype('bool')
         elif df[c].dtype == 'datetime64':
             variable_types['Date'].append(c)
+        elif df[c].dtype == 'datetime64[ns]':
+            variable_types['Date'].append(c)
         elif df[c].dtype == 'int':
             variable_types['Numeric'].append(c)
         elif df[c].dtype == 'float':
