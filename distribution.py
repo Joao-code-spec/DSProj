@@ -33,7 +33,6 @@ def distribution(datadF):
     i, j = 0, 0
 
     for n in range(len(numeric_vars)):
-        print(n)
         axs[i, j].set_title('Boxplot for %s'%numeric_vars[n])
         axs[i, j].boxplot(datadF[numeric_vars[n]].dropna().values)
         i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
