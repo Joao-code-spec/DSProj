@@ -5,7 +5,7 @@ register_matplotlib_converters()
 # filename = 'data/algae.csv'
 # data = read_csv(filename, index_col='date', na_values='', parse_dates=True, infer_datetime_format=True)
 
-filename = 'diabetic_data.csv'
+filename = 'data/diabetic_data.csv'
 data = read_csv(filename, na_values='?')
 
 data.shape
