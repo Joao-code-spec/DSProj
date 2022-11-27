@@ -1,8 +1,10 @@
 #pacotes
-from pandas import read_csv
+from pandas import read_csv, Series
+from numpy import log
 from pandas.plotting import register_matplotlib_converters
-from matplotlib.pyplot import savefig, show, subplots
-from ds_charts import get_variable_types, choose_grid, HEIGHT
+from matplotlib.pyplot import savefig, show, subplots, figure, Axes
+from ds_charts import get_variable_types, choose_grid, HEIGHT,  multiple_bar_chart, multiple_line_chart
+from scipy.stats import norm, expon, lognorm
 
 
 register_matplotlib_converters() 
@@ -12,15 +14,14 @@ diabetic = 'data/diabetic_data.csv'
 data_drought = read_csv(drought, index_col=['fips', 'date'],na_values='', parse_dates=True, infer_datetime_format=True) #converte de csv para dataFrame
 data_diabetic= read_csv(diabetic, index_col=['encounter_id','patient_nbr'], na_values='?') #converte de csv para dataFrame
 
-#data_drought=data_drought_t.drop(columns=['fips', 'date'])
-#data_diabetic=data_diabetic_t.drop(columns=['patient_nbr'])
-
 def distribution(datadF):
     if datadF.equals(data_drought):
         data_name="Drought"
     elif datadF.equals(data_diabetic):
         data_name="Diabetes"
     summary5 = datadF.describe()
+
+    #NUMERIC VARIABLES
 
     numeric_vars = get_variable_types(datadF)['Numeric'] 
 
@@ -50,12 +51,35 @@ def distribution(datadF):
         axs2[k, m].hist(datadF[numeric_vars[n]].dropna().values, 'auto')
         k, m= (k + 1, 0) if (n+1) % cols == 0 else (k, m + 1)
 
-        
+
     savefig('images/distribution/single_boxplots_'+data_name+'.png')
     savefig('images/distribution/single_histograms_numeric_'+data_name+'.png')
+
+    NR_STDEV: int = 3
+
+    outliers_iqr = []
+    outliers_stdev = []
+    summary5 = datadF.describe(include='number')
+
+    for var in numeric_vars:
+        iqr = 1.5 * (summary5[var]['75%'] - summary5[var]['25%'])
+        outliers_iqr += [
+            datadF[datadF[var] > summary5[var]['75%']  + iqr].count()[var] +
+            datadF[datadF[var] < summary5[var]['25%']  - iqr].count()[var]]
+        std = NR_STDEV * summary5[var]['std']
+        outliers_stdev += [
+            datadF[datadF[var] > summary5[var]['mean'] + std].count()[var] +
+            datadF[datadF[var] < summary5[var]['mean'] - std].count()[var]]
+
+    outliers = {'iqr': outliers_iqr, 'stdev': outliers_stdev}
+    figure(figsize=(12, HEIGHT))
+    multiple_bar_chart(numeric_vars, outliers, title='Nr of outliers per variable', xlabel='variables', ylabel='nr outliers', percentage=False)
+    savefig('images/distribution/outliers_'+data_name+'.png')
+
 
     show()
 
 distribution(data_diabetic)
+
 
 
