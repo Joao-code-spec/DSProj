@@ -58,4 +58,4 @@ def distribution_charts(datadF):
 
 show()
 
-distribution_charts(data_diabetic)
+distribution_charts(data_drought)
