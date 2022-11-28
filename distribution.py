@@ -92,6 +92,8 @@ def distribution(datadF):
     savefig('images/distribution/histograms_symbolic_'+data_name+'.png')
 
 
+
+    show()
     
 
 
