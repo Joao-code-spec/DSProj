@@ -47,14 +47,24 @@ def distribution_charts(datadF):
 
     rows, cols = choose_grid(len(numeric_vars))
 
+
     fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
     i, j = 0, 0
-    for n in range(len(numeric_vars)):
+    for n in range(25):
         print(n)
         histogram_with_distributions(axs[i, j], datadF[numeric_vars[n]].dropna(), numeric_vars[n])
         i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
 
-    savefig('images/distribution/dist_charts'+data_name+'.png')
+    savefig('images/distribution/dist_charts1'+data_name+'.png')
+
+    #fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
+    #i, j = 0, 0
+    #for n in range(len(numeric_vars)):
+        #print(n)
+        #histogram_with_distributions(axs[i, j], datadF[numeric_vars[n]].dropna(), numeric_vars[n])
+        #i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
+
+    #savefig('images/distribution/dist_charts'+data_name+'.png')
 
 show()
 
