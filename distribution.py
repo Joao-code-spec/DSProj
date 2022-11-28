@@ -2,8 +2,8 @@
 from pandas import read_csv, Series
 from numpy import log
 from pandas.plotting import register_matplotlib_converters
-from matplotlib.pyplot import savefig, show, subplots, figure, Axes
-from ds_charts import get_variable_types, choose_grid, HEIGHT,  multiple_bar_chart, multiple_line_chart
+from matplotlib.pyplot import savefig, show, subplots, figure, Axes, plot
+from ds_charts import get_variable_types, choose_grid, HEIGHT,  multiple_bar_chart, multiple_line_chart, bar_chart
 from scipy.stats import norm, expon, lognorm
 
 
@@ -22,6 +22,7 @@ def distribution(datadF):
     summary5 = datadF.describe()
 
     #NUMERIC VARIABLES
+    
 
     numeric_vars = get_variable_types(datadF)['Numeric'] 
 
@@ -77,7 +78,22 @@ def distribution(datadF):
     savefig('images/distribution/outliers_'+data_name+'.png')
 
 
-    show()
+    symbolic_vars = get_variable_types(datadF)['Symbolic']
+    if [] == symbolic_vars:
+        raise ValueError('There are no symbolic variables.')
+
+    rows, cols = choose_grid(len(symbolic_vars))
+    fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
+    i, j = 0, 0
+    for n in range(len(symbolic_vars)):
+        counts = datadF[symbolic_vars[n]].value_counts()
+        bar_chart(counts.index.to_list(), counts.values, ax=axs[i, j], title='Histogram for %s'%symbolic_vars[n], xlabel=symbolic_vars[n], ylabel='nr records', percentage=False)
+        i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
+    savefig('images/distribution/histograms_symbolic_'+data_name+'.png')
+
+
+    
+
 
 distribution(data_diabetic)
 
