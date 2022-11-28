@@ -22,7 +22,7 @@ for n in range(len(symbolic_vars)):
     axs[i, j].set_title('Histogram for %s'%symbolic_vars[n])
     axs[i, j].set_xlabel(symbolic_vars[n])
     axs[i, j].set_ylabel('nr records')
-    axs[i, j].scatter(symbolic_vars[n], data.shape[0])
+    axs[i, j].scatter(symbolic_vars[n], len(symbolic_vars[n]))
     i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
 savefig('images/granularity_symbolic.png')
 show()
