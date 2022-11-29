@@ -11,8 +11,12 @@ register_matplotlib_converters()
 drought = 'data/drought.csv'
 diabetic = 'data/diabetic_data.csv'
 
-data_drought = read_csv(drought, index_col=['fips', 'date'],na_values='', parse_dates=True, infer_datetime_format=True) #converte de csv para dataFrame
-data_diabetic= read_csv(diabetic, index_col=['encounter_id','patient_nbr'], na_values='?') #converte de csv para dataFrame
+#data_drought = read_csv(drought, index_col=['fips', 'date'],na_values='', parse_dates=True, infer_datetime_format=True) #converte de csv para dataFrame
+#data_diabetic= read_csv(diabetic, index_col=['encounter_id','patient_nbr'], na_values='?') #converte de csv para dataFrame
+
+data_drought = read_csv(drought,na_values='', parse_dates=True, infer_datetime_format=True).drop(['fips', 'date'], axis=1) #converte de csv para dataFrame
+data_diabetic= read_csv(diabetic, na_values='?').drop(['encounter_id','patient_nbr'], axis=1) #converte de csv para dataFrame
+
 
 def distribution(datadF):
     if datadF.equals(data_drought):
@@ -22,7 +26,6 @@ def distribution(datadF):
     summary5 = datadF.describe()
 
     #NUMERIC VARIABLES
-    
 
     numeric_vars = get_variable_types(datadF)['Numeric'] 
 
@@ -76,11 +79,12 @@ def distribution(datadF):
     figure(figsize=(12, HEIGHT))
     multiple_bar_chart(numeric_vars, outliers, title='Nr of outliers per variable', xlabel='variables', ylabel='nr outliers', percentage=False)
     savefig('images/distribution/outliers_'+data_name+'.png')
-
+    
 
     symbolic_vars = get_variable_types(datadF)['Symbolic']
     if [] == symbolic_vars:
         raise ValueError('There are no symbolic variables.')
+
 
     rows, cols = choose_grid(len(symbolic_vars))
     fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
@@ -92,9 +96,8 @@ def distribution(datadF):
     savefig('images/distribution/histograms_symbolic_'+data_name+'.png')
 
 
-
-    show()
-    
+  
+  
 
 
 distribution(data_diabetic)
