@@ -15,10 +15,17 @@ data_diabetic= read_csv(diabetic, index_col=['encounter_id','patient_nbr'], na_v
 
 
 def distribution_charts(datadF):
+    
+    numeric_vars = get_variable_types(datadF)['Numeric'] 
+    
+    
     if datadF.equals(data_drought):
         data_name="Drought"
+        cont_vars=numeric_vars[0:17] + numeric_vars[21:26] + numeric_vars[30:33]
+
     elif datadF.equals(data_diabetic):
         data_name="Diabetes"
+        cont_vars=[numeric_vars[3]]+[numeric_vars[4]]+[numeric_vars[6]]+[numeric_vars[7]]
     summary5 = datadF.describe()
 
     def compute_known_distributions(x_values: list) -> dict:
@@ -40,19 +47,22 @@ def distribution_charts(datadF):
         distributions = compute_known_distributions(values)
         multiple_line_chart(values, distributions, ax=ax, title='Best fit for %s'%var, xlabel=var, ylabel='')
 
-    numeric_vars = get_variable_types(datadF)['Numeric'] 
+    
 
-    if [] == numeric_vars:
-        raise ValueError('There are no numeric variables.')
+    
 
-    rows, cols = choose_grid(len(numeric_vars))
+    print(cont_vars)
+    if [] == cont_vars:
+        raise ValueError('There are no continuous variables.')
+
+    rows, cols = choose_grid(len(cont_vars))
 
 
     fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
     i, j = 0, 0
-    for n in range(25):
+    for n in range(len(cont_vars)):
         print(n)
-        histogram_with_distributions(axs[i, j], datadF[numeric_vars[n]].dropna(), numeric_vars[n])
+        histogram_with_distributions(axs[i, j], datadF[cont_vars[n]].dropna(), cont_vars[n])
         i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
 
     savefig('images/distribution/dist_charts1'+data_name+'.png')
