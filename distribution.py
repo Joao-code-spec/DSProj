@@ -17,4 +17,15 @@ if [] == numeric_vars:
 
 data_drought.boxplot(rot=45)
 savefig('images/distribution/global_boxplot.png')
+
+rows, cols = choose_grid(len(numeric_vars))
+
+fig, axs = subplots(rows, cols, figsize=(cols*HEIGHT, rows*HEIGHT), squeeze=False)
+i, j = 0, 0
+
+for n in range(len(numeric_vars)):
+    axs[i, j].set_title('Boxplot for %s'%numeric_vars[n])
+    axs[i, j].boxplot(data_drought[numeric_vars[n]].dropna().values)
+    i, j = (i + 1, 0) if (n+1) % cols == 0 else (i, j + 1)
+savefig('images/distribution/single_boxplots.png')
 show()
