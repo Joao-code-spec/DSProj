@@ -2,9 +2,19 @@ from pandas import read_csv
 from pandas.plotting import register_matplotlib_converters
 
 register_matplotlib_converters()
-file = 'algae'
-filename = 'data/algae.csv'
-data = read_csv(filename, index_col='date', na_values='', parse_dates=True, infer_datetime_format=True)
+
+#colocar 1 se queremos o diabetico ou colocar outra coisa qualquer se queremos o drought
+
+x = 1
+
+if x == 1:
+    file = 'my_diabetic_data'
+    filename = 'data/my_diabetic_data.csv'
+    data = read_csv(filename, na_values='', parse_dates=True, infer_datetime_format=True)
+else :
+    file = 'my_diabetic_data'
+    filename = 'data/my_diabetic_data.csv'
+    data = read_csv(filename, index_col='date', na_values='', parse_dates=True, infer_datetime_format=True)
 
 from ds_charts import get_variable_types
 
