@@ -1,9 +1,10 @@
 from numpy import ndarray
 from pandas import DataFrame, read_csv, unique
-from matplotlib.pyplot import figure, savefig, show
+from matplotlib.pyplot import figure, savefig, show, axes
 from sklearn.neighbors import KNeighborsClassifier
 from ds_charts import plot_evaluation_results, multiple_line_chart, plot_overfitting_study
 from sklearn.metrics import accuracy_score
+from matplotlib.pyplot import subplots, savefig, show, figure, title
 
 
 #colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
@@ -55,6 +56,13 @@ print('Best results with %d neighbors and %s'%(best[0], best[1]))
 
 ############### confusion matrix
 
+from numpy import ndarray
+from sklearn.metrics import confusion_matrix
+
+import itertools
+import matplotlib.pyplot as plt
+CMAP = plt.cm.Blues
+
 def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax: plt.Axes = None,
                           normalize: bool = False):
     if ax is None:
@@ -81,9 +89,20 @@ def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax:
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         ax.text(j, i, format(cm[i, j], fmt), color='y', horizontalalignment="center")
 
-############### chamar a funcao da confusion matrix
+############### chamar a funcao da confusion matrix ############# alterar data
 
-data = read_csv('data/iris.csv')
+import numpy as np
+from pandas import read_csv, concat, unique, DataFrame
+import matplotlib.pyplot as plt
+import ds_charts as ds
+from sklearn.model_selection import train_test_split
+import itertools
+import matplotlib.pyplot as plt
+CMAP = plt.cm.Blues
+from numpy import ndarray
+from sklearn.metrics import confusion_matrix
+
+data = read_csv('data/diabetic_IterativeImputer.csv')
 y = data.pop('readmitted').values
 X = data.values
 labels = unique(y)
@@ -91,16 +110,19 @@ labels.sort()
 
 trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
 
-clf = GaussianNB()
-clf.fit(trnX, trnY)
-prdY = clf.predict(tstX)
+axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
 
-plt.figure()
-fig, axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
-plot_confusion_matrix(confusion_matrix(tstY, prdY, labels=labels), labels, ax=axs[0,0], )
-plot_confusion_matrix(confusion_matrix(tstY, prdY, labels=labels), labels, ax=axs[0,1], normalize=True)
+clf = KNeighborsClassifier(n_neighbors=best[0], metric=best[1]) #escrever o classificador
+clf.fit(trnX, trnY) # treinar classificador como treining set trn
+prd_trn = clf.predict(trnX) # preverresultados do treino com base no treino
+prd_tst = clf.predict(tstX) # previsao do testing set sendo dado o testing set 
+plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,0], )
+plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
 plt.tight_layout()
 plt.show()
+savefig('images/{file_tag}_matrix.png')
+
+
 
 ###############
 
