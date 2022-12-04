@@ -1,5 +1,10 @@
 from pandas import read_csv
 from pandas.plotting import register_matplotlib_converters
+import matplotlib
+import pandas
+from matplotlib.pyplot import subplots, savefig, show, figure, title
+from ds_charts import get_variable_types, HEIGHT
+from seaborn import heatmap
 
 register_matplotlib_converters()
 
@@ -59,4 +64,5 @@ axs[0, 1].set_title('Z-score normalization')
 norm_data_zscore.boxplot(ax=axs[0, 1])
 axs[0, 2].set_title('MinMax normalization')
 norm_data_minmax.boxplot(ax=axs[0, 2])
+savefig(f'images/scaling_study_diabetic.png')
 show()
