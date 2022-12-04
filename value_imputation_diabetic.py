@@ -25,14 +25,8 @@ savefig(f'images/value_imputation/diabetic_missing_values.png')
 
 exEstimator = DecisionTreeRegressor(max_features='sqrt', random_state=42)
 exStyle = 'descending'
-
-# Imputer definition
 exImputer = IterativeImputer(estimator=exEstimator, imputation_order=exStyle, random_state=42)
-
-# Fit on the dataset
 exImputer.fit(data)
-
-# Transform and convert to a dataframe
 data = DataFrame(exImputer.transform(data), columns = data.columns)
 
 data.to_csv(f'data/{file}_filling_missing_values.csv', index=False)
