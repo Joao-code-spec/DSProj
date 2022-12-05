@@ -7,7 +7,22 @@ from sklearn.metrics import accuracy_score
 from matplotlib.pyplot import subplots, savefig, show, figure, title
 from numpy import ndarray
 from sklearn.metrics import confusion_matrix
-
+from numpy import ndarray
+from sklearn.metrics import confusion_matrix
+import itertools
+import matplotlib.pyplot as plt
+CMAP = plt.cm.Blues
+import numpy as np
+from pandas import read_csv, concat, unique, DataFrame
+import matplotlib.pyplot as plt
+import ds_charts as ds
+from sklearn.model_selection import train_test_split
+import itertools
+import matplotlib.pyplot as plt
+CMAP = plt.cm.Blues
+from numpy import ndarray
+from sklearn.metrics import confusion_matrix
+from matplotlib.pyplot import figure, savefig
 
 #colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
 
@@ -54,16 +69,9 @@ figure()
 multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True)
 savefig('images/{file_tag}_knn_study.png')
 show()
-print('Best results with %d neighbors and %s'%(best[0], best[1]))
+print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
 ############### confusion matrix
-
-from numpy import ndarray
-from sklearn.metrics import confusion_matrix
-
-import itertools
-import matplotlib.pyplot as plt
-CMAP = plt.cm.Blues
 
 def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax: plt.Axes = None,
                           normalize: bool = False):
@@ -89,20 +97,9 @@ def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax:
 
     fmt = '.2f' if normalize else 'd'
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        ax.text(j, i, format(cm[i, j], fmt), color='y', horizontalalignment="center")
+        ax.text(j, i, format(cm[i, j], fmt), color='y', horizontalalignment="center")      
 
 ############### chamar a funcao da confusion matrix ############# alterar data
-
-import numpy as np
-from pandas import read_csv, concat, unique, DataFrame
-import matplotlib.pyplot as plt
-import ds_charts as ds
-from sklearn.model_selection import train_test_split
-import itertools
-import matplotlib.pyplot as plt
-CMAP = plt.cm.Blues
-from numpy import ndarray
-from sklearn.metrics import confusion_matrix
 
 data = read_csv('data/diabetic_IterativeImputer.csv')
 y = data.pop('readmitted').values
@@ -124,11 +121,7 @@ plt.tight_layout()
 plt.show()
 savefig('images/{file_tag}_matrix.png')
 
-
-
-###############
-
-from matplotlib.pyplot import figure, savefig
+############### plot_overfitting
 
 def plot_overfitting_study(xvalues, prd_trn, prd_tst, name, xlabel, ylabel):
     evals = {'Train': prd_trn, 'Test': prd_tst}
@@ -149,7 +142,7 @@ for n in nvalues:
     y_trn_values.append(eval_metric(trnY, prd_trn_Y))
 plot_overfitting_study(nvalues, y_trn_values, y_tst_values, name=f'KNN_K={n}_{d}', xlabel='K', ylabel=str(eval_metric))
 
-############### 
+############### plot_evaluation
 
 clf = knn = KNeighborsClassifier(n_neighbors=best[0], metric=best[1])
 clf.fit(trnX, trnY)
@@ -158,3 +151,9 @@ prd_tst = clf.predict(tstX)
 plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst)
 savefig('images/{file_tag}_knn_best.png')
 show()
+
+#end
+
+
+
+
