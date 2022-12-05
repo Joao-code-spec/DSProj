@@ -99,9 +99,9 @@ def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax:
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         ax.text(j, i, format(cm[i, j], fmt), color='y', horizontalalignment="center")      
 
-############### chamar a funcao da confusion matrix ############# alterar data
+############### chamar a funcao da confusion matrix ############# alterar data AQUI O NOME COMLETO NAO COMO LA EM CIMA
 
-data = read_csv('data/diabetic_IterativeImputer.csv')
+data = read_csv('data/diabetic_IterativeImputer_filling_missing_values.csv')
 y = data.pop('readmitted').values
 X = data.values
 labels = unique(y)
