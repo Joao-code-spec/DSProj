@@ -1,10 +1,12 @@
 from numpy import ndarray
 from pandas import DataFrame, read_csv, unique
-from matplotlib.pyplot import figure, savefig, show, axes
+from matplotlib.pyplot import figure, savefig, show
 from sklearn.neighbors import KNeighborsClassifier
 from ds_charts import plot_evaluation_results, multiple_line_chart, plot_overfitting_study
 from sklearn.metrics import accuracy_score
 from matplotlib.pyplot import subplots, savefig, show, figure, title
+from numpy import ndarray
+from sklearn.metrics import confusion_matrix
 
 
 #colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
