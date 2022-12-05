@@ -3,18 +3,54 @@ from pandas import DataFrame, read_csv, unique, concat
 from matplotlib.pyplot import figure, savefig, show, subplots, title
 from sklearn.neighbors import KNeighborsClassifier
 import ds_charts as ds
-from ds_charts import plot_evaluation_results, multiple_line_chart, plot_overfitting_study
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import confusion_matrix
+import matplotlib as plt
+from ds_charts import plot_evaluation_results, multiple_line_chart, plot_overfitting_study, multiple_bar_chart
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import itertools
 CMAP = plt.cm.Blues
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-#colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
 
-x = 1
+##catarina ################################
+from sklearn.metrics import recall_score, confusion_matrix, accuracy_score,precision_score
+from sklearn.neighbors import KNeighborsClassifier
+
+data = read_csv('data/diabetic_IterativeImputer_filling_missing_values.csv')
+y = data.pop('readmitted').values
+X = data.values
+labels = unique(y)
+labels.sort()
+
+trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
+
+clf = KNeighborsClassifier(n_neighbors=19, metric="euclidean") #Defining the KNN classifier
+clf.fit(trnX, trnY) #Training the classifier
+prdY = clf.predict(tstX) #predicted values for the testing set
+prdY_train =clf.predict(trnX) #predicted vaçues for the training set
+
+recall_test=recall_score(prdY, tstY,average="macro")
+accuracy_test=accuracy_score(prdY, tstY)
+precision_test= precision_score(prdY, tstY,average="macro")
+
+recall_train=recall_score(prdY_train, trnY,average="macro")
+accuracy_train=accuracy_score(prdY_train, trnY)
+precision_train= precision_score(prdY_train, trnY,average="macro")
+
+evaluation = {
+        'Accuracy': [accuracy_train, accuracy_test],
+        'Recall': [recall_train, recall_test],
+        'Precision': [precision_train, precision_test]}
+
+multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
+savefig('images/value_imputation/modelPerformance_knn_study.png')
+show()
+
+######################################
+
+"""COMENTARIOS
+x = 1 #colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
 
 if x == 1:
     file_tag = 'diabetic_IterativeImputer'
@@ -42,6 +78,7 @@ values = {}
 best = (0, '')
 last_best = 0
 for d in dist:
+    print(d)
     y_tst_values = []
     for n in nvalues:
         knn = KNeighborsClassifier(n_neighbors=n, metric=d)
@@ -49,11 +86,12 @@ for d in dist:
         prd_tst_Y = knn.predict(tstX)
         y_tst_values.append(eval_metric(tstY, prd_tst_Y))
         if y_tst_values[-1] > last_best:
-            best = (n, d)
+            best = (n, d)   
             last_best = y_tst_values[-1]
     values[d] = y_tst_values
-
 figure()
+print("best" + best)
+
 multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True)
 savefig('images/{file_tag}_knn_study.png')
 show()
@@ -89,14 +127,6 @@ def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax:
 
 ############### chamar a funcao da confusion matrix ############# alterar data AQUI O NOME COMLETO NAO COMO LA EM CIMA
 
-data = read_csv('data/diabetic_IterativeImputer_filling_missing_values.csv')
-y = data.pop('readmitted').values
-X = data.values
-labels = unique(y)
-labels.sort()
-
-trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
-
 clf = KNeighborsClassifier(n_neighbors=best[0], metric=best[1]) #escrever o classificador
 clf.fit(trnX, trnY) # treinar classificador como treining set trn
 prd_trn = clf.predict(trnX) # preverresultados do treino com base no treino
@@ -123,6 +153,8 @@ eval_metric = accuracy_score
 y_tst_values = []
 y_trn_values = []
 for n in nvalues:
+    print(n)
+    print("accuracy")
     knn = KNeighborsClassifier(n_neighbors=n, metric=d)
     knn.fit(trnX, trnY)
     prd_tst_Y = knn.predict(tstX)
@@ -131,15 +163,21 @@ for n in nvalues:
     y_trn_values.append(eval_metric(trnY, prd_trn_Y))
 plot_overfitting_study(nvalues, y_trn_values, y_tst_values, name=f'KNN_K={n}_{d}', xlabel='K', ylabel=str(eval_metric))
 
+"""
+
 ############### plot_evaluation
 
-clf = knn = KNeighborsClassifier(n_neighbors=best[0], metric=best[1])
-clf.fit(trnX, trnY)
-prd_trn = clf.predict(trnX)
-prd_tst = clf.predict(tstX)
-plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst)
-savefig('images/{file_tag}_knn_best.png')
-show()
+
+
+
+
+#clf = knn = KNeighborsClassifier(n_neighbors=best[0], metric=best[1])
+#clf.fit(trnX, trnY)
+#prd_trn = clf.predict(trnX)
+#prd_tst = clf.predict(tstX)
+#plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst)
+#savefig('images/{file_tag}_knn_best.png')
+#show()
 
 #end
 
