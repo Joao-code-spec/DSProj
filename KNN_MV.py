@@ -109,12 +109,13 @@ labels.sort()
 
 trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
 
-axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
-
 clf = KNeighborsClassifier(n_neighbors=best[0], metric=best[1]) #escrever o classificador
 clf.fit(trnX, trnY) # treinar classificador como treining set trn
 prd_trn = clf.predict(trnX) # preverresultados do treino com base no treino
 prd_tst = clf.predict(tstX) # previsao do testing set sendo dado o testing set 
+
+plt.figure()
+fig, axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
 plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,0], )
 plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
 plt.tight_layout()
