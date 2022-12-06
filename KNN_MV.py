@@ -23,13 +23,13 @@ from sklearn.neighbors import KNeighborsClassifier
 
 x = 1 #colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
 
-if x == 1:
+if x == 0:
     file_tag = 'diabetic_IterativeImputer'
-    filename = 'data/diabetic_IterativeImputer'
+    filename = 'data/MVI/out/diabetic_IterativeImputer'
     target = 'readmitted'
 else :
-    file = 'diabetic_mean_test'
-    filename = 'data/diabetic_mean_test'
+    file_tag = 'diabetic_mean'
+    filename = 'data/MVI/out/diabetic_mean'
     target = 'readmitted'
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
@@ -68,7 +68,11 @@ show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
 ####CATARINA
-data = read_csv('data/diabetic_IterativeImputer_filling_missing_values.csv')
+if x==1:
+    data = read_csv('data/MVI/diabetic_IterativeImputer_filling_missing_values.csv')
+else:
+    data = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
+    
 y = data.pop('readmitted').values
 X = data.values
 labels = unique(y)
@@ -95,8 +99,9 @@ evaluation = {
         'Precision': [precision_train, precision_test]}
 
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
-savefig('images/value_imputation/modelPerformance_knn_study.png')
+savefig('images/value_imputation/'+file_tag+'_knn_study.png')
 show()
+
 #### CATARINA
 
 
