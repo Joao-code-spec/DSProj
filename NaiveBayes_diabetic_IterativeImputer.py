@@ -11,7 +11,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 file_tag = 'diabetic_IterativeImputer'
-data: DataFrame = read_csv('data\diabetic_IterativeImputer_filling_missing_values.csv')
+data: DataFrame = read_csv('data/MVI/diabetic_IterativeImputer_filling_missing_values.csv')
 target = 'readmitted'
 verypositive = 2
 positive = 1
@@ -87,6 +87,7 @@ plot_confusion_matrix(confusion_matrix(tstY, prdY, labels=labels), labels, ax=ax
 plot_confusion_matrix(confusion_matrix(tstY, prdY, labels=labels), labels, ax=axs[0,1], normalize=True)
 plt.tight_layout()
 plt.savefig('images/classification/diabetic_IterativeImputer_confusion_matrix.png')
+show() 
 
 from sklearn.metrics import accuracy_score
 
@@ -107,8 +108,8 @@ for clf in estimators:
 plt.figure()
 ds.bar_chart(xvalues, yvalues, title='Comparison of Naive Bayes Models', ylabel='accuracy', percentage=True)
 plt.savefig(f'images/classification/diabetic_IterativeImputer_accuracy.png')
+show()
 
-print("I reached here")
 ####CATARINA
 
 clf = BernoulliNB() #Defining the NB classifier
@@ -130,6 +131,6 @@ evaluation = {
         'Precision': [precision_train, precision_test]}
 
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
-savefig('images/value_imputation/modelPerformance_BernoulliNB_study.png')
+savefig('images/value_imputation/Intimputer_BernoulliNB_study.png')
 show()
 #### CATARINA
