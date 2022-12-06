@@ -17,39 +17,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import recall_score, confusion_matrix, accuracy_score,precision_score
 from sklearn.neighbors import KNeighborsClassifier
 
-data = read_csv('data/diabetic_IterativeImputer_filling_missing_values.csv')
-y = data.pop('readmitted').values
-X = data.values
-labels = unique(y)
-labels.sort()
 
-trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
-
-clf = KNeighborsClassifier(n_neighbors=19, metric="euclidean") #Defining the KNN classifier
-clf.fit(trnX, trnY) #Training the classifier
-prdY = clf.predict(tstX) #predicted values for the testing set
-prdY_train =clf.predict(trnX) #predicted vaçues for the training set
-
-recall_test=recall_score(prdY, tstY,average="macro")
-accuracy_test=accuracy_score(prdY, tstY)
-precision_test= precision_score(prdY, tstY,average="macro")
-
-recall_train=recall_score(prdY_train, trnY,average="macro")
-accuracy_train=accuracy_score(prdY_train, trnY)
-precision_train= precision_score(prdY_train, trnY,average="macro")
-
-evaluation = {
-        'Accuracy': [accuracy_train, accuracy_test],
-        'Recall': [recall_train, recall_test],
-        'Precision': [precision_train, precision_test]}
-
-multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
-savefig('images/value_imputation/modelPerformance_knn_study.png')
-show()
 
 ######################################
 
-"""COMENTARIOS
 x = 1 #colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
 
 if x == 1:
@@ -96,6 +67,41 @@ multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=st
 savefig('images/{file_tag}_knn_study.png')
 show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
+
+
+####CATARINA
+data = read_csv('data/diabetic_IterativeImputer_filling_missing_values.csv')
+y = data.pop('readmitted').values
+X = data.values
+labels = unique(y)
+labels.sort()
+
+trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
+
+clf = KNeighborsClassifier(n_neighbors=best[0], metric=best[1]) #Defining the KNN classifier
+clf.fit(trnX, trnY) #Training the classifier
+prdY = clf.predict(tstX) #predicted values for the testing set
+prdY_train =clf.predict(trnX) #predicted vaçues for the training set
+
+recall_test=recall_score(prdY, tstY,average="macro")
+accuracy_test=accuracy_score(prdY, tstY)
+precision_test= precision_score(prdY, tstY,average="macro")
+
+recall_train=recall_score(prdY_train, trnY,average="macro")
+accuracy_train=accuracy_score(prdY_train, trnY)
+precision_train= precision_score(prdY_train, trnY,average="macro")
+
+evaluation = {
+        'Accuracy': [accuracy_train, accuracy_test],
+        'Recall': [recall_train, recall_test],
+        'Precision': [precision_train, precision_test]}
+
+multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
+savefig('images/value_imputation/modelPerformance_knn_study.png')
+show()
+#### CATARINA
+
+
 
 ############### confusion matrix
 
@@ -163,12 +169,7 @@ for n in nvalues:
     y_trn_values.append(eval_metric(trnY, prd_trn_Y))
 plot_overfitting_study(nvalues, y_trn_values, y_tst_values, name=f'KNN_K={n}_{d}', xlabel='K', ylabel=str(eval_metric))
 
-"""
-
 ############### plot_evaluation
-
-
-
 
 
 #clf = knn = KNeighborsClassifier(n_neighbors=best[0], metric=best[1])
