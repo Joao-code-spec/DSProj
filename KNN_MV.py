@@ -63,7 +63,7 @@ for d in dist:
 figure()
 
 multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True)
-savefig('images/{file_tag}_knn_study.png')
+savefig('images/'+file_tag+'_knn_study.png')
 show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
@@ -72,7 +72,7 @@ if x==1:
     data = read_csv('data/MVI/diabetic_IterativeImputer_filling_missing_values.csv')
 else:
     data = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
-    
+
 y = data.pop('readmitted').values
 X = data.values
 labels = unique(y)
@@ -147,7 +147,7 @@ plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax
 plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
 plt.tight_layout()
 plt.show()
-savefig('images/{file_tag}_matrix.png')
+savefig('images/'+file_tag+'matrix.png')
 
 ############### plot_overfitting
 
@@ -155,7 +155,7 @@ def plot_overfitting_study(xvalues, prd_trn, prd_tst, name, xlabel, ylabel):
     evals = {'Train': prd_trn, 'Test': prd_tst}
     figure()
     multiple_line_chart(xvalues, evals, ax = None, title=f'Overfitting {name}', xlabel=xlabel, ylabel=ylabel, percentage=True)
-    savefig('images/overfitting_{name}.png')
+    savefig('images/overfitting_'+file_tag+'.png')
 
 d = 'euclidean'
 eval_metric = accuracy_score
