@@ -5,19 +5,19 @@ from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
 #file = 'my_diabetic_data'
-#filename = 'data/my_diabetic_data.csv'
+#filename = 'data/MVI/diabetic_mean_filling_missing_values.csv'
 file = 'drought'
 filename = 'data/drought.csv'
 
 data = read_csv(filename, na_values='')
-#data = read_csv(filename, index_col='date', na_values='', parse_dates=True, infer_datetime_format=True)
+#data = read_csv(filename, na_values='', parse_dates=True, infer_datetime_format=True)
 data.describe()
 
 from pandas import DataFrame
 from ds_charts import get_variable_types
 
-OUTLIER_PARAM: int = 2 # define the number of stdev to use or the IQR scale (usually 1.5)
-OPTION = 'iqr'  # or 'stdev'
+OUTLIER_PARAM: int = 3 # define the number of stdev to use or the IQR scale (usually 1.5)
+OPTION = 'stdev'  # or 'stdev' 'iqr'
 
 def determine_outlier_thresholds(summary5: DataFrame, var: str):
     if 'iqr' == OPTION:
@@ -59,3 +59,4 @@ for var in numeric_vars:
 
 print('data after truncating outliers:', df.describe())
 df.to_csv(f'data/outliers/{file}_truncate_outliers.csv', index=True)
+
