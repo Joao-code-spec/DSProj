@@ -1,8 +1,17 @@
 import numpy as np
 from pandas import read_csv, concat, unique, DataFrame
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import savefig, show
 import ds_charts as ds
+from ds_charts import multiple_bar_chart
 from sklearn.model_selection import train_test_split
+from numpy import ndarray
+from sklearn.metrics import confusion_matrix, recall_score, accuracy_score, precision_score
+from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
+import itertools
+
+
+
 
 file_tag = 'diabetic_mean'
 data: DataFrame = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
@@ -59,11 +68,7 @@ def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax:
         ax.text(j, i, format(cm[i, j], fmt), color='y', horizontalalignment="center")
 ########
 
-from numpy import ndarray
-from sklearn.metrics import confusion_matrix
-from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
-import itertools
-import matplotlib.pyplot as plt
+
 CMAP = plt.cm.Blues
 
 clf = BernoulliNB()
@@ -82,7 +87,6 @@ plot_confusion_matrix(confusion_matrix(tstY, prdY, labels=labels), labels, ax=ax
 plt.tight_layout()
 plt.savefig('images/classification/diabetic_mean_confusion_matrix.png')
 
-from sklearn.metrics import accuracy_score
 
 estimators = {'GaussianNB': GaussianNB(),
               'MultinomialNB': MultinomialNB(),
@@ -101,3 +105,28 @@ for clf in estimators:
 plt.figure()
 ds.bar_chart(xvalues, yvalues, title='Comparison of Naive Bayes Models', ylabel='accuracy', percentage=True)
 plt.savefig(f'images/classification/diabetic_mean_accuracy.png')
+show()
+
+####CATARINA
+
+clf = BernoulliNB() #Defining the NB classifier
+clf.fit(trnX, trnY) #Training the classifier
+prdY = clf.predict(tstX) #predicted values for the testing set
+prdY_train =clf.predict(trnX) #predicted vaçues for the training set
+
+recall_test=recall_score(prdY, tstY,average="macro")
+accuracy_test=accuracy_score(prdY, tstY)
+precision_test= precision_score(prdY, tstY,average="macro")
+
+recall_train=recall_score(prdY_train, trnY,average="macro")
+accuracy_train=accuracy_score(prdY_train, trnY)
+precision_train= precision_score(prdY_train, trnY,average="macro")
+
+evaluation = {
+        'Accuracy': [accuracy_train, accuracy_test],
+        'Recall': [recall_train, recall_test],
+        'Precision': [precision_train, precision_test]}
+
+multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
+savefig('images/value_imputation/Mean_BernoulliNB_study.png')
+show()
