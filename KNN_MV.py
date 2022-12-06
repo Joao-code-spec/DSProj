@@ -61,7 +61,6 @@ for d in dist:
             last_best = y_tst_values[-1]
     values[d] = y_tst_values
 figure()
-print("best" + best)
 
 multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True)
 savefig('images/{file_tag}_knn_study.png')
