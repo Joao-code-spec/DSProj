@@ -67,7 +67,6 @@ savefig('images/{file_tag}_knn_study.png')
 show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
-
 ####CATARINA
 data = read_csv('data/diabetic_IterativeImputer_filling_missing_values.csv')
 y = data.pop('readmitted').values
@@ -159,7 +158,6 @@ y_tst_values = []
 y_trn_values = []
 for n in nvalues:
     print(n)
-    print("accuracy")
     knn = KNeighborsClassifier(n_neighbors=n, metric=d)
     knn.fit(trnX, trnY)
     prd_tst_Y = knn.predict(tstX)
