@@ -29,11 +29,12 @@ exImputer = IterativeImputer(estimator=exEstimator, imputation_order=exStyle, ra
 exImputer.fit(data)
 data = DataFrame(exImputer.transform(data), columns = data.columns)
 
-data.to_csv(f'data/{file}_filling_missing_values.csv', index=False)
+data.to_csv(f'data/MVI/{file}_filling_missing_values.csv', index=False)
 
 file = 'diabetic_mean'
 filename = 'data/my_diabetic_data.csv'
 data = read_csv(filename, index_col=0)
 
 data.fillna(data.mean(),inplace=True)
-data.to_csv(f'data/{file}_filling_missing_values.csv', index=False)
+data.to_csv(f'data/MVI/{file}_filling_missing_values.csv', index=False)
+
