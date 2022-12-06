@@ -5,7 +5,7 @@ import ds_charts as ds
 from sklearn.model_selection import train_test_split
 
 file_tag = 'diabetic_mean'
-data: DataFrame = read_csv('data\diabetic_mean_filling_missing_values.csv')
+data: DataFrame = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
 target = 'readmitted'
 verypositive = 2
 positive = 1
@@ -19,10 +19,10 @@ labels.sort()
 trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
 
 train = concat([DataFrame(trnX, columns=data.columns), DataFrame(trnY,columns=[target])], axis=1)
-train.to_csv(f'data/{file_tag}_train.csv', index=False)
+train.to_csv(f'data/MVI/out/{file_tag}_train.csv', index=False)
 
 test = concat([DataFrame(tstX, columns=data.columns), DataFrame(tstY,columns=[target])], axis=1)
-test.to_csv(f'data/{file_tag}_test.csv', index=False)
+test.to_csv(f'data/MVI/out/{file_tag}_test.csv', index=False)
 
 values['Train'] = [len(np.delete(trnY, np.argwhere(trnY!=verypositive))), len(np.delete(trnY, np.argwhere(trnY!=positive))),len(np.delete(trnY, np.argwhere(trnY!=negative)))]
 values['Test'] = [len(np.delete(tstY, np.argwhere(tstY!=verypositive))), len(np.delete(tstY, np.argwhere(tstY!=positive))),len(np.delete(tstY, np.argwhere(tstY!=negative)))]
