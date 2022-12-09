@@ -133,4 +133,4 @@ evaluation = {
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
 savefig('images/value_imputation/Intimputer_BernoulliNB_study.png')
 show()
-#### CATARINA
+#### 
