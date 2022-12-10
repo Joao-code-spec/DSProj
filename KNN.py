@@ -20,7 +20,7 @@ from sklearn.neighbors import KNeighborsClassifier
 file_tag = 'OutlierDrop_drought'
 filename = 'data/outliers/out/OutlierDrop_drought'
 target = 'class'
-data = read_csv('data/outliers/drought_drop_outliers.csv')
+data = read_csv('data/outliers/drought_drop_outliers.csv',parse_dates=True, infer_datetime_format=True)
 
 #x=3 se diabetico x=2 se drought
 x=2
