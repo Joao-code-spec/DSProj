@@ -17,10 +17,13 @@ from sklearn.neighbors import KNeighborsClassifier
 ######################################
 
 #ALTERAR O FICHEIRO
-file_tag = 'diabetic_IterativeImputer'
-filename = 'data/MVI/out/diabetic_IterativeImputer'
+file_tag = 'diabetic_mean'
+filename = 'data/MVI/out/diabetic_mean'
 target = 'readmitted'
-data = read_csv('data/MVI/diabetic_IterativeImputer_filling_missing_values.csv')
+data = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
+
+#x=3 se diabetico x=2 se drought
+x=2
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
@@ -125,13 +128,28 @@ clf.fit(trnX, trnY) # treinar classificador como treining set trn
 prd_trn = clf.predict(trnX) # preverresultados do treino com base no treino
 prd_tst = clf.predict(tstX) # previsao do testing set sendo dado o testing set 
 
-plt.figure()
-fig, axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
-plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,0], )
-plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
-plt.tight_layout()
-plt.show()
-savefig('images/'+file_tag+'matrix_KNN.png')
+if x==3:
+    plt.figure()
+    fig, axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
+    plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,0], )
+    plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
+    plt.tight_layout()
+    plt.show()
+    savefig('images/'+file_tag+'matrix_KNN.png')
+else:
+    labels: ndarray = unique(y)
+    labels.sort()
+    prdY: ndarray = clf.predict(tstX)
+    cnf_mtx_tst: ndarray = confusion_matrix(tstY, prdY, labels=labels)
+    cnf_mtx_tst
+
+    plt.figure()
+    fig, axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
+    plot_confusion_matrix(cnf_mtx_tst, labels, ax=axs[0,0])
+    plot_confusion_matrix(cnf_mtx_tst, labels, axs[0,1], normalize=True)
+    plt.tight_layout()
+    plt.show()
+    savefig('images/'+file_tag+'matrix_KNN.png')
 
 ############### plot_overfitting
 
