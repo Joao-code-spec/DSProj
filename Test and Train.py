@@ -8,16 +8,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import recall_score, confusion_matrix, accuracy_score,precision_score
 from sklearn.neighbors import KNeighborsClassifier
 
-<<<<<<< HEAD
-x=1 #0 para drop; usar outro numero se quiser usar o truncate
-=======
+#<<<<<<< HEAD
+#x=1 #0 para drop; usar outro numero se quiser usar o truncate
+#=======
 #x=3 se diabetico x=2 se drought
 x=2
->>>>>>> 0923ef1f37727fd581d4c5eeb6e9fb7364646769
+#>>>>>>> 0923ef1f37727fd581d4c5eeb6e9fb7364646769
 
 #ALTERAR FICHEIRO
-data: DataFrame = read_csv('data/outliers/drought_truncate_outliers.csv')
-file_tag = 'OutlierTruncate_drought'
+data: DataFrame = read_csv('data/scaling/scalling_scaled_minmax.csv')
+file_tag = 'Scalling_minmax'
 
 if x==3:
 #para dados diabeticos
