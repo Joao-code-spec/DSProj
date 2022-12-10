@@ -62,7 +62,7 @@ print('Best results with %d neighbors and %s'%(best[0], best[1]))
 
 ####CATARINA
 
-y = data.pop('readmitted').values
+y = data.pop(target).values
 X = data.values
 labels = unique(y)
 labels.sort()
