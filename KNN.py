@@ -17,10 +17,10 @@ from sklearn.neighbors import KNeighborsClassifier
 ######################################
 
 #ALTERAR O FICHEIRO
-file_tag = 'OutlierDrop_drought'
-filename = 'data/outliers/out/OutlierDrop_drought'
+file_tag = 'OutlierTruncate_drought'
+filename = 'data/outliers/out/OutlierTruncate_drought'
 target = 'class'
-data = read_csv('data/outliers/drought_drop_outliers.csv',parse_dates=True, infer_datetime_format=True)
+data = read_csv('data/outliers/drought_truncate_outliers.csv',parse_dates=True, infer_datetime_format=True)
 
 #x=3 se diabetico x=2 se drought
 x=2
@@ -55,9 +55,11 @@ for d in dist:
     values[d] = y_tst_values
 figure()
 
-multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True)
+# Create a figure and axes for each of the plots
+fig1, ax1 = subplots()
+fig2, ax2 = subplots()
+multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True, ax=ax1)
 savefig('images/'+file_tag+'_KNN_study.png')
-show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
 ####CATARINA
@@ -87,8 +89,9 @@ evaluation = {
         'Recall': [recall_train, recall_test],
         'Precision': [precision_train, precision_test]}
 
-multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
-savefig('images/value_imputation/'+file_tag+'_KNN_study.png')
+multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True, ax=ax2)
+show()
+savefig('images/value_imputation/'+file_tag+'overfitting_KNN_study.png')
 show()
 
 #### CATARINA

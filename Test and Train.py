@@ -12,8 +12,8 @@ from sklearn.neighbors import KNeighborsClassifier
 x=2
 
 #ALTERAR FICHEIRO
-data: DataFrame = read_csv('data/outliers/drought_drop_outliers.csv')
-file_tag = 'OutlierDrop_drought'
+data: DataFrame = read_csv('data/outliers/drought_truncate_outliers.csv')
+file_tag = 'OutlierTruncate_drought'
 
 if x==3:
 #para dados diabeticos
