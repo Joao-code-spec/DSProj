@@ -18,20 +18,15 @@ from sklearn.metrics import recall_score, confusion_matrix, accuracy_score,preci
 from sklearn.neighbors import KNeighborsClassifier
 
 ######################################
-
+target = 'readmitted'
 
 x=1
-
-
-
-
-
-
-
-
-file_tag = 'diabetic_mean'
-filename = 'data/MVI/out/diabetic_mean'
-target = 'readmitted'
+if x==0:
+    file_tag = 'KNNOutlierDrop_diabetic_mean'
+    filename = 'data/outliers/out/OutlierDrop_diabetic_mean'
+else:
+    file_tag = 'KNNOutlierTruncate_diabetic_mean'
+    filename = 'data/outliers/out/OutlierTruncate_diabetic_mean'
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
@@ -64,15 +59,15 @@ for d in dist:
 figure()
 
 multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True)
-savefig('images/'+file_tag+'_knn_study.png')
+savefig('images/outliers/'+file_tag+'_knn_study.png')
 show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
 ####CATARINA
-if x==1:
-    data = read_csv('data/MVI/diabetic_IterativeImputer_filling_missing_values.csv')
+if x==0:
+    data = read_csv('data/outliers/my_diabetic_data_drop_outliers.csv')
 else:
-    data = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
+    data = read_csv('data/outliers/my_diabetic_data_truncate_outliers.csv')
 
 y = data.pop('readmitted').values
 X = data.values
@@ -100,12 +95,8 @@ evaluation = {
         'Precision': [precision_train, precision_test]}
 
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
-savefig('images/value_imputation/'+file_tag+'_knn_study.png')
+savefig('images/outliers/'+file_tag+'_knn_study.png')
 show()
-
-#### CATARINA
-
-
 
 ############### confusion matrix
 
@@ -147,8 +138,9 @@ fig, axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
 plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,0], )
 plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
 plt.tight_layout()
+savefig('images/outliers/'+file_tag+'matrix.png')
 plt.show()
-savefig('images/'+file_tag+'matrix.png')
+
 
 ############### plot_overfitting
 
@@ -156,7 +148,7 @@ def plot_overfitting_study(xvalues, prd_trn, prd_tst, name, xlabel, ylabel):
     evals = {'Train': prd_trn, 'Test': prd_tst}
     figure()
     multiple_line_chart(xvalues, evals, ax = None, title=f'Overfitting {name}', xlabel=xlabel, ylabel=ylabel, percentage=True)
-    savefig('images/overfitting_'+file_tag+'.png')
+    savefig('images/outliers/overfitting_'+file_tag+'.png')
 
 d = 'euclidean'
 eval_metric = accuracy_score
