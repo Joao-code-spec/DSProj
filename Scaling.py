@@ -8,18 +8,9 @@ from seaborn import heatmap
 
 register_matplotlib_converters()
 
-#colocar 1 se queremos o diabetico ou colocar outra coisa qualquer se queremos o drought
-
-x = 1
-
-if x == 1:
-    file = 'my_diabetic_data'
-    filename = 'data/my_diabetic_data.csv'
-    data = read_csv(filename, na_values='', parse_dates=True, infer_datetime_format=True)
-else :
-    file = 'my_diabetic_data'
-    filename = 'data/my_diabetic_data.csv'
-    data = read_csv(filename, index_col='date', na_values='', parse_dates=True, infer_datetime_format=True)
+file = 'scalling'
+filename = 'data/Scaling/drought_truncate_outliers.csv'
+data = read_csv(filename, na_values='', parse_dates=True, infer_datetime_format=True)
 
 from ds_charts import get_variable_types
 
