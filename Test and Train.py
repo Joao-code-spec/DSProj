@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import recall_score, confusion_matrix, accuracy_score,precision_score
 from sklearn.neighbors import KNeighborsClassifier
 
-x=0 #0 para drop; usar outro numero se quiser usar o truncate
+x=1 #0 para drop; usar outro numero se quiser usar o truncate
 
 if x==0:
     data: DataFrame = read_csv('data/outliers/my_diabetic_data_drop_outliers.csv')
