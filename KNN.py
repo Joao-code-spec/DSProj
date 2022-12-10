@@ -17,10 +17,10 @@ from sklearn.neighbors import KNeighborsClassifier
 ######################################
 
 #ALTERAR O FICHEIRO
-file_tag = 'diabetic_mean'
-filename = 'data/MVI/out/diabetic_mean'
-target = 'readmitted'
-data = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
+file_tag = 'OutlierDrop_drought'
+filename = 'data/outliers/out/OutlierDrop_drought'
+target = 'class'
+data = read_csv('data/outliers/drought_drop_outliers.csv')
 
 #x=3 se diabetico x=2 se drought
 x=2
