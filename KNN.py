@@ -53,7 +53,7 @@ for d in dist:
 figure()
 
 multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(accuracy_score), percentage=True)
-savefig('images/'+file_tag+'_knn_study.png')
+savefig('images/'+file_tag+'_KNN_study.png')
 show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
@@ -85,7 +85,7 @@ evaluation = {
         'Precision': [precision_train, precision_test]}
 
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
-savefig('images/value_imputation/'+file_tag+'_knn_study.png')
+savefig('images/value_imputation/'+file_tag+'_KNN_study.png')
 show()
 
 #### CATARINA
@@ -131,7 +131,7 @@ plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax
 plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
 plt.tight_layout()
 plt.show()
-savefig('images/'+file_tag+'matrix.png')
+savefig('images/'+file_tag+'matrix_KNN.png')
 
 ############### plot_overfitting
 
@@ -139,7 +139,7 @@ def plot_overfitting_study(xvalues, prd_trn, prd_tst, name, xlabel, ylabel):
     evals = {'Train': prd_trn, 'Test': prd_tst}
     figure()
     multiple_line_chart(xvalues, evals, ax = None, title=f'Overfitting {name}', xlabel=xlabel, ylabel=ylabel, percentage=True)
-    savefig('images/overfitting_'+file_tag+'.png')
+    savefig('images/overfitting_'+file_tag+'_KNN.png')
 
 d = 'euclidean'
 eval_metric = accuracy_score
@@ -154,8 +154,3 @@ for n in nvalues:
     y_tst_values.append(eval_metric(tstY, prd_tst_Y))
     y_trn_values.append(eval_metric(trnY, prd_trn_Y))
 plot_overfitting_study(nvalues, y_trn_values, y_tst_values, name=f'KNN_K={n}_{d}', xlabel='K', ylabel=str(eval_metric))
-
-
-
-
-
