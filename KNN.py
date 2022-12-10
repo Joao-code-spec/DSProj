@@ -11,26 +11,16 @@ CMAP = plt.cm.Blues
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-
-
-##catarina ################################
 from sklearn.metrics import recall_score, confusion_matrix, accuracy_score,precision_score
 from sklearn.neighbors import KNeighborsClassifier
 
-
-
 ######################################
 
-x = 1 #colocar 1 se queremos o diabetic_IterativeImputer ou colocar outra coisa qualquer se queremos o diabetic_mean_test
-
-if x == 0:
-    file_tag = 'diabetic_IterativeImputer'
-    filename = 'data/MVI/out/diabetic_IterativeImputer'
-    target = 'readmitted'
-else :
-    file_tag = 'diabetic_mean'
-    filename = 'data/MVI/out/diabetic_mean'
-    target = 'readmitted'
+#ALTERAR O FICHEIRO
+file_tag = 'diabetic_IterativeImputer'
+filename = 'data/MVI/out/diabetic_IterativeImputer'
+target = 'readmitted'
+data = read_csv('data/MVI/diabetic_IterativeImputer_filling_missing_values.csv')
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
@@ -68,10 +58,6 @@ show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))  
 
 ####CATARINA
-if x==1:
-    data = read_csv('data/MVI/diabetic_IterativeImputer_filling_missing_values.csv')
-else:
-    data = read_csv('data/MVI/diabetic_mean_filling_missing_values.csv')
 
 y = data.pop('readmitted').values
 X = data.values
@@ -104,8 +90,6 @@ show()
 
 #### CATARINA
 
-
-
 ############### confusion matrix
 
 def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax: plt.Axes = None,
@@ -134,7 +118,7 @@ def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax:
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         ax.text(j, i, format(cm[i, j], fmt), color='y', horizontalalignment="center")      
 
-############### chamar a funcao da confusion matrix ############# alterar data AQUI O NOME COMLETO NAO COMO LA EM CIMA
+############### chamar a funcao da confusion matrix 
 
 clf = KNeighborsClassifier(n_neighbors=best[0], metric=best[1]) #escrever o classificador
 clf.fit(trnX, trnY) # treinar classificador como treining set trn
@@ -171,18 +155,6 @@ for n in nvalues:
     y_trn_values.append(eval_metric(trnY, prd_trn_Y))
 plot_overfitting_study(nvalues, y_trn_values, y_tst_values, name=f'KNN_K={n}_{d}', xlabel='K', ylabel=str(eval_metric))
 
-############### plot_evaluation
-
-
-#clf = knn = KNeighborsClassifier(n_neighbors=best[0], metric=best[1])
-#clf.fit(trnX, trnY)
-#prd_trn = clf.predict(trnX)
-#prd_tst = clf.predict(tstX)
-#plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst)
-#savefig('images/{file_tag}_knn_best.png')
-#show()
-
-#end
 
 
 
