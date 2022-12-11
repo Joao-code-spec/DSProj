@@ -16,8 +16,8 @@ x=2
 #>>>>>>> 0923ef1f37727fd581d4c5eeb6e9fb7364646769
 
 #ALTERAR FICHEIRO
-data: DataFrame = read_csv('data/scaling/scalling_scaled_minmax.csv')
-file_tag = 'Scalling_minmax'
+data: DataFrame = read_csv('data/scaling/scalling_scaled_zscore.csv')
+file_tag = 'Scalling_zscore'
 
 if x==3:
 #para dados diabeticos

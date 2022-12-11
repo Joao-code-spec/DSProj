@@ -17,10 +17,10 @@ from sklearn.neighbors import KNeighborsClassifier
 ######################################
 
 #ALTERAR O FICHEIRO
-file_tag = 'Scalling_minmax'
-filename = 'data/scaling/out/Scalling_minmax'
+file_tag = 'Scalling_zscore'
+filename = 'data/scaling/out/Scalling_zscore'
 target = 'class'
-data = read_csv('data/scaling/scalling_scaled_minmax.csv',parse_dates=True, infer_datetime_format=True)
+data = read_csv('data/scaling/scalling_scaled_zscore.csv',parse_dates=True, infer_datetime_format=True)
 
 #x=3 se diabetico x=2 se drought
 x=2
