@@ -184,4 +184,4 @@ def outliers_diabetic(model, outlier_treatment):
             y_trn_values.append(eval_metric(trnY, prd_trn_Y))
         plot_overfitting_study(nvalues, y_trn_values, y_tst_values, name=f'KNN_K={n}_{d}', xlabel='K', ylabel=str(eval_metric))
         savefig('images/outliers/overfitting/'+file_tag+model+'KNN.png')
-outliers_diabetic("KNN", "truncate")
+outliers_diabetic("NB", "truncate")

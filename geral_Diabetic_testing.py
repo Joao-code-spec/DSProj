@@ -26,9 +26,14 @@ if x==1:
 else:
     data = read_csv('data/Scaling/my_diabetic_data_scaled_zscore.csv')
 
+#making training and testing sets
+y = data.pop('readmitted').values
+X = data.values
+labels = unique(y)
+labels.sort()
 
-
-
+trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
+    
 
 ##
 def Tests_diabetic(model):
@@ -37,15 +42,6 @@ def Tests_diabetic(model):
         file_tag = operation_type + '_diabetic'
     elif model=="NB":
         file_tag = operation_type + '_diabetic'
-
-    #makinging the train and test sets
-
-    y = data.pop('readmitted').values
-    X = data.values
-    labels = unique(y)
-    labels.sort()
-
-    trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
 
     if model == "KNN":
         eval_metric = accuracy_score
