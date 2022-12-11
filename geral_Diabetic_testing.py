@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 
-target = 'readmitted'
+#target = 'readmitted'
 
 #Parte do codigo a mudar sempre que queremos fazer outros testes
 x=1
