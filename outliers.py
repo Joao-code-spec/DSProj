@@ -4,10 +4,10 @@ from pandas.plotting import register_matplotlib_converters
 
 register_matplotlib_converters()
 
-#file = 'my_diabetic_data'
-#filename = 'data/MVI/diabetic_mean_filling_missing_values.csv'
-file = 'drought'
-filename = 'data/drought.csv'
+file = 'my_diabetic_data'
+filename = 'data/MVI/diabetic_mean_filling_missing_values.csv'
+#file = 'drought'
+#filename = 'data/drought.csv'
 
 data = read_csv(filename, na_values='')
 #data = read_csv(filename, na_values='', parse_dates=True, infer_datetime_format=True)
@@ -16,7 +16,7 @@ data.describe()
 from pandas import DataFrame
 from ds_charts import get_variable_types
 
-OUTLIER_PARAM: int = 3 # define the number of stdev to use or the IQR scale (usually 1.5)
+OUTLIER_PARAM: int = 5 # define the number of stdev to use or the IQR scale (usually 1.5)
 OPTION = 'stdev'  # or 'stdev' 'iqr'
 
 def determine_outlier_thresholds(summary5: DataFrame, var: str):
