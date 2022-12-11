@@ -17,18 +17,24 @@ from sklearn.model_selection import train_test_split
 #target = 'readmitted'
 
 #Parte do codigo a mudar sempre que queremos fazer outros testes
-x=1
-operation_type = "scalled_minmax"
-image_Folder="Scalling"
+x=2
+
+image_Folder="Scaling"
 
 if x==1:
     data = read_csv('data/Scaling/my_diabetic_data_scaled_minmax.csv')
+    operation_type = "scalled_minmax"
 else:
     data = read_csv('data/Scaling/my_diabetic_data_scaled_zscore.csv')
+    operation_type = "scalled_zscore"
 
 #making training and testing sets
 y = data.pop('readmitted').values
 X = data.values
+
+y=y.astype('int')
+X=X.astype('int')
+
 labels = unique(y)
 labels.sort()
 
@@ -101,7 +107,6 @@ def Tests_diabetic(model):
         estimators = {'GaussianNB': GaussianNB(),
               'MultinomialNB': MultinomialNB(),
               'BernoulliNB': BernoulliNB()
-              #'CategoricalNB': CategoricalNB
               }
 
         xvalues = []
@@ -176,4 +181,4 @@ def Tests_diabetic(model):
 
 
 
-Tests_diabetic("NB")
+Tests_diabetic("KNN")
