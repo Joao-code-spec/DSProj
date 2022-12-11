@@ -17,10 +17,10 @@ from sklearn.neighbors import KNeighborsClassifier
 ######################################
 
 #ALTERAR O FICHEIRO
-file_tag = 'OutlierTruncate_drought'
-filename = 'data/outliers/out/OutlierTruncate_drought'
+file_tag = 'Scalling_zscore'
+filename = 'data/scaling/out/Scalling_zscore'
 target = 'class'
-data = read_csv('data/outliers/drought_truncate_outliers.csv',parse_dates=True, infer_datetime_format=True)
+data = read_csv('data/scaling/scalling_scaled_zscore.csv',parse_dates=True, infer_datetime_format=True)
 
 #x=3 se diabetico x=2 se drought
 x=2
@@ -90,9 +90,8 @@ evaluation = {
         'Precision': [precision_train, precision_test]}
 
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True, ax=ax2)
-show()
-savefig('images/value_imputation/'+file_tag+'overfitting_KNN_study.png')
-show()
+savefig('images/'+file_tag+'performance_KNN_study.png')
+
 
 #### CATARINA
 
@@ -137,7 +136,6 @@ if x==3:
     plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,0], )
     plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
     plt.tight_layout()
-    plt.show()
     savefig('images/'+file_tag+'matrix_KNN.png')
 else:
     labels: ndarray = unique(y)
@@ -151,7 +149,6 @@ else:
     plot_confusion_matrix(cnf_mtx_tst, labels, ax=axs[0,0])
     plot_confusion_matrix(cnf_mtx_tst, labels, axs[0,1], normalize=True)
     plt.tight_layout()
-    plt.show()
     savefig('images/'+file_tag+'matrix_KNN.png')
 
 ############### plot_overfitting
@@ -162,7 +159,7 @@ def plot_overfitting_study(xvalues, prd_trn, prd_tst, name, xlabel, ylabel):
     multiple_line_chart(xvalues, evals, ax = None, title=f'Overfitting {name}', xlabel=xlabel, ylabel=ylabel, percentage=True)
     savefig('images/overfitting_'+file_tag+'_KNN.png')
 
-d = 'euclidean'
+d = best[1]
 eval_metric = accuracy_score
 y_tst_values = []
 y_trn_values = []

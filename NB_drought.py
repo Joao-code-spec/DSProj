@@ -9,10 +9,10 @@ from matplotlib.pyplot import figure, savefig, show
 from sklearn.naive_bayes import GaussianNB
 from ds_charts import plot_evaluation_results, bar_chart
 
-file_tag = 'OutlierTruncate'
-filename = 'data/outliers/out/OutlierTruncate_drought'
+file_tag = 'Scalling_minmax'
+filename = 'data/scaling/out/Scalling_minmax'
 target = 'class'
-data = read_csv('data/outliers/drought_truncate_outliers.csv',parse_dates=True, infer_datetime_format=True)
+data = read_csv('data/scaling/scalling_scaled_minmax.csv',parse_dates=True, infer_datetime_format=True)
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
