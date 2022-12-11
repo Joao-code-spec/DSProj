@@ -90,8 +90,8 @@ evaluation = {
         'Precision': [precision_train, precision_test]}
 
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True, ax=ax2)
-savefig('images/value_imputation/'+file_tag+'overfitting_KNN_study.png')
-show()
+savefig('images/'+file_tag+'performance_KNN_study.png')
+
 
 #### CATARINA
 
@@ -137,7 +137,6 @@ if x==3:
     plot_confusion_matrix(confusion_matrix(tstY, prd_tst, labels=labels), labels, ax=axs[0,1], normalize=True)
     plt.tight_layout()
     savefig('images/'+file_tag+'matrix_KNN.png')
-    plt.show()
 else:
     labels: ndarray = unique(y)
     labels.sort()
@@ -151,7 +150,6 @@ else:
     plot_confusion_matrix(cnf_mtx_tst, labels, axs[0,1], normalize=True)
     plt.tight_layout()
     savefig('images/'+file_tag+'matrix_KNN.png')
-    plt.show()
 
 ############### plot_overfitting
 
