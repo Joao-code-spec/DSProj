@@ -35,14 +35,16 @@ X = data.values
 y=y.astype('int')
 X=X.astype('int')
 
-labels = unique(y)
-labels.sort()
+
 
 trnX, tstX, trnY, tstY = train_test_split(X, y, train_size=0.7, stratify=y)
     
 
 ##
 def Tests_diabetic(model):
+
+    labels = unique(y)
+    labels.sort()
 
     if model=="KNN":
         file_tag = operation_type + '_diabetic'
