@@ -2,7 +2,7 @@
 from pandas import read_csv, Series
 from numpy import log
 from pandas.plotting import register_matplotlib_converters
-from matplotlib.pyplot import savefig, show, subplots, figure, Axes, plot
+from matplotlib.pyplot import savefig, show, subplots, figure, Axes, plot_date
 from ds_charts import get_variable_types, choose_grid, HEIGHT,  multiple_bar_chart, multiple_line_chart, bar_chart
 from scipy.stats import norm, expon, lognorm
 
@@ -33,6 +33,7 @@ def distribution(datadF):
         raise ValueError('There are no numeric variables.')
 
     datadF.boxplot(rot=45)
+    plt.figure(figsize=(6, 4))
     savefig('images/distribution/global_boxplot_'+data_name+'.png')
 
     rows, cols = choose_grid(len(numeric_vars))
