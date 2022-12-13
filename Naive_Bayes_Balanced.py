@@ -16,9 +16,10 @@ import itertools
 file_tag = 'diabetic'
 data = read_csv('data/Balancing/unbalanced.csv', index_col=0)
 target = 'readmitted'
+data[target]=2*data[target]
 
-verypositive = 1
-positive = 0.5
+verypositive = 2
+positive = 1
 negative = 0
 values = {'Original': [len(data[data[target] == verypositive]), len(data[data[target] == positive]), len(data[data[target] == negative])]}
 
@@ -39,7 +40,7 @@ train = concat([DataFrame(trnX, columns=data.columns), DataFrame(trnY,columns=[t
 original = train
 class_var = 'readmitted'
 target_count = original[class_var].value_counts()
-middle_class = 1
+middle_class = 2
 positive_class = target_count.idxmin()
 negative_class = target_count.idxmax()
 
@@ -157,6 +158,6 @@ evaluation = {
         'Accuracy': [accuracy_train, accuracy_test],
         'Recall': [recall_train, recall_test],
         'Precision': [precision_train, precision_test]}
-
+plt.figure()
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
 savefig('images/balancing/Mean_BernoulliNB_study.png')
