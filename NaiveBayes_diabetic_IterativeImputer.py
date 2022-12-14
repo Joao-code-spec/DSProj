@@ -35,7 +35,7 @@ values['Test'] = [len(np.delete(tstY, np.argwhere(tstY!=verypositive))), len(np.
 
 plt.figure(figsize=(12,4))
 ds.multiple_bar_chart([verypositive, positive, negative], values, title='Data distribution per dataset')
-plt.savefig('images/classification/diabetic_IterativeImputer_readmitted_distribution.png')
+plt.savefig('images/value_imputation/DataDistribution/diabetic_IterativeImputer_readmitted_distribution.png')
 
 ########
 def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax: plt.Axes = None,
@@ -86,10 +86,9 @@ fig, axs = plt.subplots(1, 2, figsize=(8, 4), squeeze=False)
 plot_confusion_matrix(confusion_matrix(tstY, prdY, labels=labels), labels, ax=axs[0,0], )
 plot_confusion_matrix(confusion_matrix(tstY, prdY, labels=labels), labels, ax=axs[0,1], normalize=True)
 plt.tight_layout()
-plt.savefig('images/classification/diabetic_IterativeImputer_confusion_matrix.png')
-show() 
+plt.savefig('images/value_imputation/DataDistribution/diabetic_IterativeImputer_confusion_matrix.png') 
 
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, recall_score, precision_score
 
 estimators = {'GaussianNB': GaussianNB(),
               'MultinomialNB': MultinomialNB(),
@@ -99,6 +98,8 @@ estimators = {'GaussianNB': GaussianNB(),
 
 xvalues = []
 yvalues = []
+
+
 for clf in estimators:
     xvalues.append(clf)
     estimators[clf].fit(trnX, trnY)
@@ -107,12 +108,11 @@ for clf in estimators:
 
 plt.figure()
 ds.bar_chart(xvalues, yvalues, title='Comparison of Naive Bayes Models', ylabel='accuracy', percentage=True)
-plt.savefig(f'images/classification/diabetic_IterativeImputer_accuracy.png')
-show()
+plt.savefig(f'images/value_imputation/DataDistribution/diabetic_IterativeImputer_accuracy.png')
 
 ####CATARINA
 
-clf = BernoulliNB() #Defining the NB classifier
+clf = MultinomialNB() #Defining the NB classifier
 clf.fit(trnX, trnY) #Training the classifier
 prdY = clf.predict(tstX) #predicted values for the testing set
 prdY_train =clf.predict(trnX) #predicted vaçues for the training set
@@ -129,8 +129,7 @@ evaluation = {
         'Accuracy': [accuracy_train, accuracy_test],
         'Recall': [recall_train, recall_test],
         'Precision': [precision_train, precision_test]}
-
+plt.figure()
 multiple_bar_chart(['Train', 'Test'], evaluation, title="Model's performance over Train and Test sets", percentage=True)
-savefig('images/value_imputation/Intimputer_BernoulliNB_study.png')
-show()
+savefig('images/value_imputation/DataDistribution/Intimputer_MultinomialNB_study.png')
 #### 

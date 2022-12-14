@@ -32,8 +32,8 @@ else:
 y = data.pop('readmitted').values
 X = data.values
 
-y=y.astype('int')
-X=X.astype('int')
+y=y.astype('float')
+X=X.astype('float')
 
 
 
