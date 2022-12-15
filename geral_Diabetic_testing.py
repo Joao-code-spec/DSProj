@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 #target = 'readmitted'
 
 #Parte do codigo a mudar sempre que queremos fazer outros testes
-x=2
+x=1
 
 image_Folder="Scaling"
 
