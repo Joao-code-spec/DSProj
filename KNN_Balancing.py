@@ -6,10 +6,11 @@ from ds_charts import HEIGHT,subplots, confusion_matrix, multiple_line_chart, pl
 from sklearn.metrics import accuracy_score , precision_score, recall_score, f1_score
 
 file_tag = 'diabetes_recall'
-filename = 'data/Balancing/diabetic_undersample'
+filename = 'data/Balancing/diabetic_SMOTE'
 target = 'readmitted'
 
-train: DataFrame = read_csv(f'{filename}_train.csv')
+#train: DataFrame = read_csv(f'{filename}_train.csv')
+train: DataFrame = read_csv('data/diabetic_SMOTE_smote.csv')
 trnY: ndarray = train.pop(target).values
 trnX: ndarray = train.values
 labels = unique(trnY)
@@ -41,7 +42,7 @@ for d in dist:
 
 figure()
 multiple_line_chart(nvalues, values, title='KNN variants', xlabel='n', ylabel=str(recall_score), percentage=True)
-savefig('images/balancing/KNN/diabetic/undersample/' + file_tag + '_knn_study.png')
+savefig('images/balancing/KNN/diabetic/SMOTE/' + file_tag + '_knn_study.png')
 show()
 print('Best results with %d neighbors and %s'%(best[0], best[1]))
 
@@ -77,6 +78,6 @@ clf.fit(trnX, trnY)
 prd_trn = clf.predict(trnX)
 prd_tst = clf.predict(tstX)
 plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst, average_param="macro")
-savefig(f'images/balancing/KNN/diabetic/undersample/{file_tag}_knn_best.png')
+savefig(f'images/balancing/KNN/diabetic/SMOTE/{file_tag}_knn_best.png')
 show()
 
