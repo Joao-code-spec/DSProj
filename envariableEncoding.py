@@ -16,11 +16,11 @@ data = read_csv(filename, na_values=['?',"Unknown/Invalid"])
 
 
 #race
-data=data.replace("Caucasian",1)
-data=data.replace("AfricanAmerican",2)
-data=data.replace("Hispanic",3)
 data=data.replace("Other",4)
-data=data.replace("Asian",5)
+data=data.replace("AfricanAmerican",5)
+data=data.replace("Hispanic",3)
+data=data.replace("Caucasian",2)
+data=data.replace("Asian",1)
 
 #gender
 data=data.replace("Male",0)
