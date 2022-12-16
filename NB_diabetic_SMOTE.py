@@ -3,7 +3,7 @@ from pandas import read_csv, concat, unique, DataFrame
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import savefig, show
 import ds_charts as ds
-from ds_charts import multiple_bar_chart
+from ds_charts import multiple_bar_chart, plot_confusion_matrix
 from sklearn.model_selection import train_test_split
 from numpy import ndarray
 from sklearn.metrics import confusion_matrix, recall_score, accuracy_score, precision_score
@@ -58,34 +58,6 @@ values['Test'] = [len(np.delete(tstY, np.argwhere(tstY!=verypositive))), len(np.
 plt.figure(figsize=(12,4))
 ds.multiple_bar_chart([verypositive, positive, negative], values, title='Data distribution per dataset')
 plt.savefig(f'images/Balancing/{file_tag}_distribution.png')
-
-########
-def plot_confusion_matrix(cnf_matrix: np.ndarray, classes_names: np.ndarray, ax: plt.Axes = None,
-                          normalize: bool = False):
-    if ax is None:
-        ax = plt.gca()
-    if normalize:
-        total = cnf_matrix.sum(axis=1)[:, np.newaxis]
-        cm = cnf_matrix.astype('float') / total
-        title = "Normalized confusion matrix"
-    else:
-        cm = cnf_matrix
-        title = 'Confusion matrix'
-    np.set_printoptions(precision=2)
-    tick_marks = np.arange(0, len(classes_names), 1)
-    ax.set_title(title)
-    ax.set_ylabel('True label')
-    ax.set_xlabel('Predicted label')
-    ax.set_xticks(tick_marks)
-    ax.set_yticks(tick_marks)
-    ax.set_xticklabels(classes_names)
-    ax.set_yticklabels(classes_names)
-    ax.imshow(cm, interpolation='nearest', cmap=CMAP)
-
-    fmt = '.2f' if normalize else 'd'
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        ax.text(j, i, format(cm[i, j], fmt), color='y', horizontalalignment="center")
-########
 
 
 CMAP = plt.cm.Blues
