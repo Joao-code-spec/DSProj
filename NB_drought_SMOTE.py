@@ -35,7 +35,7 @@ X = data.values
 smote_X, smote_y = smote.fit_resample(X, y)
 df_smote = concat([DataFrame(smote_X), DataFrame(smote_y)], axis=1)
 df_smote.columns = list(data.columns) + [target]
-df_smote.to_csv(f'data/{file_tag}_smote.csv', index=False)
+df_smote.to_csv(f'data/Balancing/{file_tag}_train.csv', index=False)
 
 train=df_smote
 
