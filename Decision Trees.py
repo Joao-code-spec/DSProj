@@ -8,8 +8,8 @@ from sklearn.metrics import accuracy_score
 #
 
 #Preencher com os fiheiros necessários
-file_tag = 'diabetes'
-filename = 'data/diabetes'
+file_tag = 'drought'
+filename = 'data/Balancing/drought_undersample'
 target = 'class'
 
 #Para o Overfitting
