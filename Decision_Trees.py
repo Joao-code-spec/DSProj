@@ -82,7 +82,7 @@ if target == 'class':
     plot_evaluation_results(labels_2, trnY, prd_trn, tstY, prd_tst)
     savefig(f'images/DT/{file_tag}_dt_best.png')
 if target == 'readmitted':
-    def plot_evaluation_results(labels: ndarray, trn_y, prd_trn, tst_y, prd_tst, pos_value: int = 1, average_param: str = 'binary'):
+    def plot_evaluation_results(labels_2: ndarray, trn_y, prd_trn, tst_y, prd_tst, pos_value: int = 1, average_param: str = 'binary'):
 
         def compute_eval(real, prediction):
                 evaluation = {
@@ -102,12 +102,12 @@ if target == 'readmitted':
         _, axs = subplots(1, 2, figsize=(2 * HEIGHT, HEIGHT))
         multiple_bar_chart(['Train', 'Test'], evaluation, ax=axs[0], title="Model's performance over Train and Test sets", percentage=True)
 
-        cnf_mtx_tst = confusion_matrix(tst_y, prd_tst, labels=labels)
-        plot_confusion_matrix(cnf_mtx_tst, labels, ax=axs[1], title='Test')
+        cnf_mtx_tst = confusion_matrix(tst_y, prd_tst, labels=labels_2)
+        plot_confusion_matrix(cnf_mtx_tst, labels_2, ax=axs[1], title='Test')
 
     prd_trn = best_model.predict(trnX)
     prd_tst = best_model.predict(tstX)
-    plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst, average_param="macro")
+    plot_evaluation_results(labels_2, trnY, prd_trn, tstY, prd_tst, average_param="macro")
     savefig(f'images/{file_tag}_knn_best.png')
 
 #
