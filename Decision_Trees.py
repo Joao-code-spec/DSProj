@@ -12,7 +12,7 @@ file_tag = 'drought'
 filename = 'data/Balancing/drought_undersample'
 target = 'class'
 
-#Para o Overfitting
+#Prencher para o Overfitting
 f = 'entropy'
 eval_metric = accuracy_score
 
