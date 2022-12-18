@@ -21,6 +21,9 @@ eval_metric = accuracy_score
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
 trnX: ndarray = train.values
+
+trnY=trnY.astype('float')
+
 labels = unique(trnY)
 labels.sort()
 
@@ -55,8 +58,7 @@ for k in range(len(criteria)):
         values[d] = yvalues
     multiple_line_chart(min_impurity_decrease, values, ax=axs[0, k], title=f'Decision Trees with {f} criteria',
                            xlabel='min_impurity_decrease', ylabel='accuracy', percentage=True)
-savefig(f'images/{file_tag}_dt_study.png')
-show()
+savefig(f'images/DT/{file_tag}_dt_study.png')
 print('Best results achieved with %s criteria, depth=%d and min_impurity_decrease=%1.2f ==> accuracy=%1.2f'%(best[0], best[1], best[2], last_best))
 
 #
@@ -65,15 +67,20 @@ from sklearn import tree
 
 labels = [str(value) for value in labels]
 tree.plot_tree(best_model, feature_names=train.columns, class_names=labels)
-savefig(f'images/{file_tag}_dt_best_tree.png')
+savefig(f'images/DT/{file_tag}_dt_best_tree.png')
 
 #
 
+
+
 prd_trn = best_model.predict(trnX)
 prd_tst = best_model.predict(tstX)
+
+print(prd_trn)
+print(prd_tst)
+
 plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst)
-savefig(f'images/{file_tag}_dt_best.png')
-show()
+savefig(f'images/DT/{file_tag}_dt_best.png')
 
 #
 
@@ -93,14 +100,14 @@ for f in range(len(variables)):
 
 figure()
 horizontal_bar_chart(elems, imp_values, error=None, title='Decision Tree Features importance', xlabel='importance', ylabel='variables')
-savefig(f'images/{file_tag}_dt_ranking.png')
+savefig(f'images/DT/{file_tag}_dt_ranking.png')
 
 #
 
 from ds_charts import plot_overfitting_study
 
 imp = 0.0001
-#f = 'entropy'
+f = 'entropy'
 #eval_metric = accuracy_score
 y_tst_values = []
 y_trn_values = []
@@ -112,4 +119,6 @@ for d in max_depths:
     prd_trn_Y = tree.predict(trnX)
     y_tst_values.append(eval_metric(tstY, prd_tst_Y))
     y_trn_values.append(eval_metric(trnY, prd_trn_Y))
+figure()
 plot_overfitting_study(max_depths, y_trn_values, y_tst_values, name=f'DT=imp{imp}_{f}', xlabel='max_depth', ylabel=str(eval_metric))
+savefig(f'images/DT/{file_tag}_overfitting.png')
