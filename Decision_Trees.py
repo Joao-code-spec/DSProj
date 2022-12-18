@@ -63,6 +63,8 @@ print('Best results achieved with %s criteria, depth=%d and min_impurity_decreas
 
 #
 
+labels_2=labels
+
 from sklearn import tree
 
 labels = [str(value) for value in labels]
@@ -71,12 +73,10 @@ savefig(f'images/DT/{file_tag}_dt_best_tree.png')
 
 #
 
-
-
 prd_trn = best_model.predict(trnX)
 prd_tst = best_model.predict(tstX)
 
-plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst)
+plot_evaluation_results(labels_2, trnY, prd_trn, tstY, prd_tst)
 savefig(f'images/DT/{file_tag}_dt_best.png')
 
 #
