@@ -4,13 +4,15 @@ from matplotlib.pyplot import figure, subplots, savefig, show
 from sklearn.tree import DecisionTreeClassifier
 from ds_charts import plot_evaluation_results, multiple_line_chart
 from sklearn.metrics import accuracy_score
+from ds_charts import HEIGHT,subplots, confusion_matrix, multiple_line_chart, plot_overfitting_study, multiple_bar_chart, plot_confusion_matrix
+from sklearn.metrics import accuracy_score , precision_score, recall_score, f1_score
 
 #
 
 #Preencher com os fiheiros necessários
-file_tag = 'drought'
-filename = 'data/Balancing/drought_undersample'
-target = 'class'
+file_tag = 'diabtic'
+filename = 'data/Balancing/diabetic_undersample'
+target = 'readmitted'
 
 #Prencher para o Overfitting
 f = 'entropy'
@@ -73,11 +75,40 @@ savefig(f'images/DT/{file_tag}_dt_best_tree.png')
 
 #
 
-prd_trn = best_model.predict(trnX)
-prd_tst = best_model.predict(tstX)
+if target == 'class':
+    prd_trn = best_model.predict(trnX)
+    prd_tst = best_model.predict(tstX)
 
-plot_evaluation_results(labels_2, trnY, prd_trn, tstY, prd_tst)
-savefig(f'images/DT/{file_tag}_dt_best.png')
+    plot_evaluation_results(labels_2, trnY, prd_trn, tstY, prd_tst)
+    savefig(f'images/DT/{file_tag}_dt_best.png')
+if target == 'readmitted':
+    def plot_evaluation_results(labels_2: ndarray, trn_y, prd_trn, tst_y, prd_tst, pos_value: int = 1, average_param: str = 'binary'):
+
+        def compute_eval(real, prediction):
+                evaluation = {
+                'acc': accuracy_score(real, prediction),
+                'recall': recall_score(real, prediction, pos_label=pos_value, average=average_param),
+                'precision': precision_score(real, prediction, pos_label=pos_value, average=average_param),
+                'f1': f1_score(real, prediction, pos_label=pos_value, average=average_param)
+                }
+                return evaluation
+
+        eval_trn = compute_eval(trn_y, prd_trn)
+        eval_tst = compute_eval(tst_y, prd_tst)
+        evaluation = {}
+        for key in eval_trn.keys():
+            evaluation[key] = [eval_trn[key], eval_tst[key]]
+
+        _, axs = subplots(1, 2, figsize=(2 * HEIGHT, HEIGHT))
+        multiple_bar_chart(['Train', 'Test'], evaluation, ax=axs[0], title="Model's performance over Train and Test sets", percentage=True)
+
+        cnf_mtx_tst = confusion_matrix(tst_y, prd_tst, labels=labels_2)
+        plot_confusion_matrix(cnf_mtx_tst, labels_2, ax=axs[1], title='Test')
+
+    prd_trn = best_model.predict(trnX)
+    prd_tst = best_model.predict(tstX)
+    plot_evaluation_results(labels_2, trnY, prd_trn, tstY, prd_tst, average_param="macro")
+    savefig(f'images/{file_tag}_knn_best.png')
 
 #
 
