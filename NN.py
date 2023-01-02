@@ -5,9 +5,9 @@ from sklearn.neural_network import MLPClassifier
 from ds_charts import plot_evaluation_results, multiple_line_chart, horizontal_bar_chart, HEIGHT
 from sklearn.metrics import accuracy_score
 
-file_tag = 'diabetes'
-filename = 'data/diabetes'
-target = 'class'
+file_tag = 'diabetic'
+filename = 'data/Balancing/diabetic_undersample'
+target = 'readmitted'
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
@@ -47,6 +47,6 @@ for k in range(len(lr_type)):
         values[lr] = yvalues
     multiple_line_chart(max_iter, values, ax=axs[0, k], title=f'MLP with lr_type={d}',
                            xlabel='mx iter', ylabel='accuracy', percentage=True)
-savefig(f'images/{file_tag}_mlp_study.png')
+savefig(f'images/MLP/{file_tag}_mlp_study.png')
 show()
 print(f'Best results with lr_type={best[0]}, learning rate={best[1]} and {best[2]} max iter, with accuracy={last_best}')
