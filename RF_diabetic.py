@@ -5,9 +5,9 @@ from sklearn.ensemble import RandomForestClassifier
 from ds_charts import plot_confusion_matrix, multiple_line_chart, horizontal_bar_chart, multiple_bar_chart, confusion_matrix, HEIGHT
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-file_tag = 'drought_recall'
-filename = 'data/Balancing/drought_undersample'
-target = 'class'
+file_tag = 'diabetic_recall'
+filename = 'data/Balancing/diabetic_undersample'
+target = 'readmitted'
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
@@ -48,7 +48,7 @@ for k in range(len(max_depths)):
         values[f] = yvalues
     multiple_line_chart(n_estimators, values, ax=axs[0, k], title=f'Random Forests with max_depth={d}',
                            xlabel='nr estimators', ylabel='recall', percentage=True)
-savefig(f'images/RandomForest/drought/{file_tag}_rf_study.png')
+savefig(f'images/RandomForest/diabetic/{file_tag}_rf_study.png')
 print('Best depth=%d features %1.2f estimators %d, with recall=%1.2f'%(best[0], best[1], best[2], last_best))
 
 
@@ -83,7 +83,7 @@ def plot_evaluation_results(labels: ndarray, trn_y, prd_trn, tst_y, prd_tst, pos
 prd_trn = best_model.predict(trnX)
 prd_tst = best_model.predict(tstX)
 plot_evaluation_results(labels, trnY, prd_trn, tstY, prd_tst, average_param="macro")
-savefig(f'images/RandomForest/drought/{file_tag}_rf_best.png')
+savefig(f'images/RandomForest/diabetic/{file_tag}_rf_best.png')
 
 
 ############################################################################
@@ -109,7 +109,7 @@ for f in range(len(variables)):
     #print(f'{f+1}. feature {elems[f]} ({importances[indices[f]]})')
 figure()
 horizontal_bar_chart(elems, mask_importances, mask_stdevs , title='Random Forest Features importance', xlabel='importance', ylabel='variables')
-savefig(f'images/RandomForest/drought/{file_tag}_rf_ranking.png')
+savefig(f'images/RandomForest/diabetic/{file_tag}_rf_ranking.png')
 
 
 ##############################################################################
@@ -133,5 +133,5 @@ def plot_overfitting_study(xvalues, prd_trn, prd_tst, name, xlabel, ylabel):
     evals = {'Train': prd_trn, 'Test': prd_tst}
     figure()
     multiple_line_chart(xvalues, evals, ax = None, title=f'Overfitting {name}', xlabel=xlabel, ylabel=ylabel, percentage=True)
-    savefig(f'images/RandomForest/drought/overfitting_{name}.png')
+    savefig(f'images/RandomForest/diabetic/overfitting_{name}.png')
 plot_overfitting_study(n_estimators, y_trn_values, y_tst_values, name=f'RF_depth={max_depth}_vars={f}', xlabel='nr_estimators', ylabel=str(eval_metric))

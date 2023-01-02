@@ -10,9 +10,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from ds_charts import plot_evaluation_results, multiple_line_chart, plot_overfitting_study
 from sklearn.metrics import accuracy_score , precision_score, recall_score, f1_score
 
-file_tag = 'diabetes_rec'
-filename = 'data/Balancing/diabetic_undersample'
-target = 'readmitted'
+file_tag = 'drought_rec'
+filename = 'data/Balancing/drought_undersample'
+target = 'class'
 
 train: DataFrame = read_csv(f'{filename}_train.csv')
 trnY: ndarray = train.pop(target).values
@@ -32,7 +32,7 @@ def plot_overfitting_study(xvalues, prd_trn, prd_tst, name, xlabel, ylabel):
     evals = {'Train': prd_trn, 'Test': prd_tst}
     figure()
     multiple_line_chart(xvalues, evals, ax = None, title=f'Overfitting {name}', xlabel=xlabel, ylabel=ylabel, percentage=True)
-    savefig(f'images/balancing/KNN/diabetic/undersample/overfitting_{name}.png')
+    savefig(f'images/balancing/drought/KNN/undersample/overfitting_{name}.png')
 
 d = 'manhattan'
 eval_metric = recall_score
