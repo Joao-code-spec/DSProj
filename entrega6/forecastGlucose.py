@@ -14,14 +14,18 @@ def aggregate_by(data: Series, index_var: str, period: str):
 
 
 
-file_tag = 'glucose/forecasting/M'
-nameOfData='glucose_monthly'
+file_tag = 'glucose/forecasting/D_Win10_2Diff'
+nameOfData='glucose_daily_D_Win10_2Diff'
 index_col='Date'
 target='Glucose'
 data = read_csv('data/glucoseDateTarget.csv', index_col='Date', sep=',', decimal='.', parse_dates=True, infer_datetime_format=True, dayfirst=True)
 
 data.sort_values('Date', axis=0, ascending=True, inplace=True, kind='quicksort', na_position='last', ignore_index=False, key=None)
-data = aggregate_by(data, 'Date', 'M')
+data = data.diff().diff()
+data = aggregate_by(data, 'Date', 'D')
+WIN_SIZE = 10
+#rolling = data.rolling(window=WIN_SIZE)
+#date = rolling.mean()
 print(data.head())
 
 
@@ -58,11 +62,11 @@ eval_results['SimpleAvg'] = PREDICTION_MEASURES[measure](test.values, prd_tst)
 print(eval_results)
 
 plot_evaluation_results(train.values, prd_trn, test.values, prd_tst, f'{nameOfData}_simpleAvg_eval')
-savefig( f'images/{file_tag}_simpleAvg_eval.png')
-show()
+#savefig( f'images/{file_tag}_simpleAvg_eval.png')
+#show()
 plot_forecasting_series(train, test, prd_trn, prd_tst, f'{nameOfData}_simpleAvg_plots', x_label=index_col, y_label=target)
-savefig( f'images/{file_tag}_simpleAvg_plots.png')
-show()
+#savefig( f'images/{file_tag}_simpleAvg_plots.png')
+#show()
 
 #Persistence Model
 print("\n DOING Persistence Model \n")
