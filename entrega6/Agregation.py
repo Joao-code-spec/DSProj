@@ -103,3 +103,32 @@ for j in range(len(bins)):
     axs[j].set_ylabel('Nr records')
     axs[j].hist(histograma.values, bins=bins[j])
 savefig('entrega6/images/Drought/DroughtHistogramMonthly.png')
+
+#
+#Data Stationarity
+#
+
+from numpy import ones
+from pandas import Series
+
+dt_series = Series(data['QV2M'])
+
+def plot_mean_line(BINS):
+    line = []
+    n = len(dt_series)
+    for i in range(BINS):
+        b = dt_series[i*n//BINS:(i+1)*n//BINS]
+        mean = [b.mean()] * (n//BINS)
+        line += mean
+    line += [line[-1]] * (n - len(line))
+    mean_line = Series(line, index=dt_series.index)
+    series = {'QV2M': dt_series, 'mean': mean_line}
+    figure(figsize=(3*HEIGHT, HEIGHT))
+    plot_series(series, x_label='time', y_label='Specific Humidity at 2 Meters (g/kg)', title='Stationary study', show_std=True)
+    savefig('entrega6/images/Drought/DroughtStationarity' + str(BINS) + '.png')
+
+plot_mean_line(1)
+plot_mean_line(15)
+plot_mean_line(30)
+plot_mean_line(60)
+
