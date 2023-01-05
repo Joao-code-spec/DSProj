@@ -24,8 +24,8 @@ data.sort_values('Date', axis=0, ascending=True, inplace=True, kind='quicksort',
 data = data.diff().diff()
 data = aggregate_by(data, 'Date', 'D')
 WIN_SIZE = 10
-#rolling = data.rolling(window=WIN_SIZE)
-#date = rolling.mean()
+rolling = data.rolling(window=WIN_SIZE)
+date = rolling.mean()
 print(data.head())
 
 
