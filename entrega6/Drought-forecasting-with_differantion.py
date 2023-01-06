@@ -18,14 +18,14 @@ def aggregate_by(data: Series, index_var: str, period: str):
 
 
 
-file_tag = 'Drought_with_smothing_1D'
+file_tag = 'Drought_with_smothing_0D'
 index_col='date'
 target='QV2M'
 data = read_csv('entrega6/data/drought.forecasting_dataset_DROP.csv', index_col=index_col, sep=',', decimal='.', parse_dates=True,dayfirst=True, infer_datetime_format=True)
 nameOfData='Drought_daily'
 
 data.sort_values('date', axis=0, ascending=True, inplace=True, kind='quicksort', na_position='last', ignore_index=False, key=None)
-data = data.diff()
+data = data
 data = aggregate_by(data, 'date', 'D')
 WIN_SIZE = 10
 rolling = data.rolling(window=WIN_SIZE)
