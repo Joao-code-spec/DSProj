@@ -1,6 +1,6 @@
 #NOME
 
-nameOfData='Drought_Montly'
+nameOfData='Drought_Daily'
 
 #Training e defenições
 
@@ -21,7 +21,7 @@ def aggregate_by(data: Series, index_var: str, period: str):
     agg_df.set_index(index_var, drop=True, inplace=True)
     return agg_df
 
-data = aggregate_by(data, 'date', 'M')
+data = aggregate_by(data, 'date', 'D')
 
 print(data.head())
 
@@ -83,4 +83,49 @@ plot_evaluation_results(train.values, prd_trn, test.values, prd_tst, f'entrega6/
 savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_persistence_eval.png')
 plot_forecasting_series(train, test, prd_trn, prd_tst, f'entrega6/images/Drought/forecasting/{file_tag}_persistence_plots.png', x_label=index_col, y_label=target)
 savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_persistence_plots.png')
+
+#Smoothing
+
+from ts_functions import plot_series, HEIGHT
+
+WIN_SIZE = 1
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 10
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 50
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 100
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 1600
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
 show()

@@ -131,4 +131,3 @@ plot_mean_line(1)
 plot_mean_line(15)
 plot_mean_line(30)
 plot_mean_line(60)
-
