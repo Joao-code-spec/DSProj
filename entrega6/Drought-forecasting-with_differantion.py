@@ -1,28 +1,36 @@
-
-#NOME
-
-nameOfData='Drought_daily'
-
 from sklearn.base import RegressorMixin
 from ts_functions import PREDICTION_MEASURES, plot_evaluation_results, plot_forecasting_series
-
 from pandas import read_csv, DataFrame, Series
 from matplotlib.pyplot import savefig, show
 from ts_functions import HEIGHT, split_dataframe
-
-from pandas import read_csv, DataFrame
+from pandas import read_csv, Series
+from matplotlib.pyplot import figure, xticks, show
+from ts_functions import plot_series, HEIGHT
 from matplotlib.pyplot import figure, subplots
-from ts_functions import HEIGHT, split_dataframe
 
 
-#Treino
+def aggregate_by(data: Series, index_var: str, period: str):
+    index = data.index.to_period(period)
+    agg_df = data.copy().groupby(index).mean()
+    agg_df[index_var] = index.drop_duplicates().to_timestamp()
+    agg_df.set_index(index_var, drop=True, inplace=True)
+    return agg_df
 
-file_tag = 'Drought_with_smothing'
+
+
+file_tag = 'Drought_with_smothing_1D'
 index_col='date'
 target='QV2M'
 data = read_csv('entrega6/data/drought.forecasting_dataset_DROP.csv', index_col=index_col, sep=',', decimal='.', parse_dates=True,dayfirst=True, infer_datetime_format=True)
+nameOfData='Drought_daily'
 
-train, test = split_dataframe(data, trn_pct=0.75)
+data.sort_values('date', axis=0, ascending=True, inplace=True, kind='quicksort', na_position='last', ignore_index=False, key=None)
+data = data.diff()
+data = aggregate_by(data, 'date', 'D')
+WIN_SIZE = 10
+rolling = data.rolling(window=WIN_SIZE)
+date = rolling.mean()
+print(data.head())
 
 def split_dataframe(data, trn_pct=0.70):
     trn_size = int(len(data) * trn_pct)
@@ -43,36 +51,13 @@ def plot_forecasting_series(trn, tst, prd_trn, prd_tst, figname: str, x_label: s
     ax.plot(tst.index, prd_tst, '--r', label='test prediction')
     ax.legend(prop={'size': 5})
 
+train, test = split_dataframe(data, trn_pct=0.75)
 
 measure = 'R2'
 flag_pct = False
 eval_results = {}
 
-#
-
-def aggregate_by(data: Series, index_var: str, period: str):
-    index = data.index.to_period(period)
-    agg_df = data.copy().groupby(index).mean()
-    agg_df[index_var] = index.drop_duplicates().to_timestamp()
-    agg_df.set_index(index_var, drop=True, inplace=True)
-    return agg_df
-
-data = aggregate_by(data, 'date', 'D')
-WIN_SIZE = 1600
-rolling = data.rolling(window=WIN_SIZE)
-smooth_df = rolling.mean()
-
-print(data.head())
-
-train2, test2 = split_dataframe(data, trn_pct=0.75)
-
-#simple average
-
-print("\n DOING simple average \n")
-train2, test2 = split_dataframe(data, trn_pct=0.75)
-##
-
-#Persistence Model
+#PM
 
 class PersistenceRegressor (RegressorMixin):
     def __init__(self):
@@ -89,15 +74,23 @@ class PersistenceRegressor (RegressorMixin):
         return prd
 
 fr_mod = PersistenceRegressor()
-fr_mod.fit(train2)
-prd_trn = fr_mod.predict(train2)
+fr_mod.fit(train)
+prd_trn = fr_mod.predict(train)
 prd_tst = fr_mod.predict(test)
 
 eval_results['Persistence'] = PREDICTION_MEASURES[measure](test.values, prd_tst)
 print(eval_results)
 
-plot_evaluation_results(train2.values, prd_trn, test.values, prd_tst, f'{nameOfData}persisEval')
+import numpy as np
+
+# Drop missing values from the input arrays
+train.dropna(inplace=True)
+prd_trn = prd_trn[~np.isnan(prd_trn)]
+test.dropna(inplace=True)
+prd_tst = prd_tst[~np.isnan(prd_tst)]
+
+plot_evaluation_results(train.values, prd_trn, test.values, prd_tst, f'{nameOfData}persisEval')
 savefig( f'entrega6/images/Drought/forecasting/{file_tag}_persistence_eval.png')
-plot_forecasting_series(train2, test, prd_trn, prd_tst, f'{nameOfData}_persistence_plots', x_label=index_col, y_label=target)
+plot_forecasting_series(train, test, prd_trn, prd_tst, f'{nameOfData}_persistence_plots', x_label=index_col, y_label=target)
 savefig( f'entrega6/images/Drought/forecasting/{file_tag}_persistence_plots.png')
 show()
