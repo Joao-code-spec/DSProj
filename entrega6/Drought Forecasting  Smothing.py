@@ -13,23 +13,26 @@ from ts_functions import HEIGHT, split_dataframe
 from pandas import read_csv, DataFrame
 from matplotlib.pyplot import figure, subplots
 from ts_functions import HEIGHT, split_dataframe
+from matplotlib.pyplot import figure, xticks, show
 
 #Treino
 
 file_tag = 'Drought_with_smothing'
 index_col='date'
 target='QV2M'
-data = read_csv('entrega6/data/drought.forecasting_dataset_DROP.csv', index_col=index_col, sep=',', decimal='.', parse_dates=True,dayfirst=True, infer_datetime_format=True)
+data = read_csv('entrega6/data/Drought forecasting_train.csv', index_col=index_col, sep=',', decimal='.', parse_dates=True,dayfirst=True, infer_datetime_format=True)
 
-train, test = split_dataframe(data, trn_pct=0.75)
+def aggregate_by(data: Series, index_var: str, period: str):
+    index = data.index.to_period(period)
+    agg_df = data.copy().groupby(index).mean()
+    agg_df[index_var] = index.drop_duplicates().to_timestamp()
+    agg_df.set_index(index_var, drop=True, inplace=True)
+    return agg_df
 
-def split_dataframe(data, trn_pct=0.70):
-    trn_size = int(len(data) * trn_pct)
-    df_cp = data.copy()
-    train: DataFrame = df_cp.iloc[:trn_size, :]
-    test: DataFrame = df_cp.iloc[trn_size:]
-    return train, test
+data = aggregate_by(data, 'date', 'D') # É PARA FAZER COM A MAIS ATOMICA
 
+test = read_csv('entrega6/data/Drought forecasting_test.csv', index_col=index_col, sep=',', decimal='.', parse_dates=True,dayfirst=True, infer_datetime_format=True)
+train = data
 
 def plot_forecasting_series(trn, tst, prd_trn, prd_tst, figname: str, x_label: str = 'time', y_label:str =''):
     _, ax = subplots(1,1,figsize=(5*HEIGHT, HEIGHT), squeeze=True)
@@ -41,7 +44,6 @@ def plot_forecasting_series(trn, tst, prd_trn, prd_tst, figname: str, x_label: s
     ax.plot(tst.index, tst, label='test', color='g')
     ax.plot(tst.index, prd_tst, '--r', label='test prediction')
     ax.legend(prop={'size': 5})
-
 
 measure = 'R2'
 flag_pct = False
@@ -93,27 +95,13 @@ savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_
 
 # Forecasting Smothing
 
-def aggregate_by(data: Series, index_var: str, period: str):
-    index = data.index.to_period(period)
-    agg_df = data.copy().groupby(index).mean()
-    agg_df[index_var] = index.drop_duplicates().to_timestamp()
-    agg_df.set_index(index_var, drop=True, inplace=True)
-    return agg_df
-
-data = aggregate_by(data, 'date', 'D')
 WIN_SIZE = 1600
 rolling = data.rolling(window=WIN_SIZE)
 smooth_df = rolling.mean()
+train2 = smooth_df
 
 print(data.head())
-
-train2, test2 = split_dataframe(data, trn_pct=0.75)
-
-#simple average
-
-print("\n DOING simple average \n")
-train2, test2 = split_dataframe(data, trn_pct=0.75)
-##
+print(train2.head())
 
 #Persistence Model
 
@@ -143,4 +131,5 @@ plot_evaluation_results(train2.values, prd_trn, test.values, prd_tst, f'{nameOfD
 savefig( f'entrega6/images/Drought/forecasting/{file_tag}_persistence_eval.png')
 plot_forecasting_series(train2, test, prd_trn, prd_tst, f'{nameOfData}_persistence_plots', x_label=index_col, y_label=target)
 savefig( f'entrega6/images/Drought/forecasting/{file_tag}_persistence_plots.png')
+
 show()
