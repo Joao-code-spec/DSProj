@@ -95,10 +95,13 @@ savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_
 
 # Forecasting Smothing
 
-WIN_SIZE = 10
+WIN_SIZE = 1
 rolling = data.rolling(window=WIN_SIZE)
 smooth_df = rolling.mean()
 train2 = smooth_df
+
+# drop rows with any NaN values
+train2 = train2.dropna()
 
 print(data.head())
 print(train2.head())
@@ -128,8 +131,19 @@ eval_results['Persistence'] = PREDICTION_MEASURES[measure](test.values, prd_tst)
 print(eval_results)
 
 plot_evaluation_results(train2.values, prd_trn, test.values, prd_tst, f'{nameOfData}persisEval')
-savefig( f'entrega6/images/Drought/forecasting/{file_tag}_persistence_eval.png')
-plot_forecasting_series(train2, test, prd_trn, prd_tst, f'{nameOfData}_persistence_plots', x_label=index_col, y_label=target)
-savefig( f'entrega6/images/Drought/forecasting/{file_tag}_persistence_plots.png')
 
-show()
+# create file name using string formatting
+file_name = f"{file_tag}_persistence_eval_WIN_SIZE_{WIN_SIZE}.png"
+
+# save the plot using the file name
+savefig(f'entrega6/images/Drought/forecasting/{file_name}')
+
+plot_forecasting_series(train2, test, prd_trn, prd_tst, f'{nameOfData}_persistence_plots', x_label=index_col, y_label=target)
+
+# create file name using string formatting
+file_name = f"{file_tag}_persistence_plots_WIN_SIZE_{WIN_SIZE}.png"
+
+# save the plot using the file name
+savefig(f'entrega6/images/Drought/forecasting/{file_name}')
+
+#show()
