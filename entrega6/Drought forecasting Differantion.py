@@ -25,11 +25,20 @@ data = read_csv('entrega6/data/drought.forecasting_dataset_DROP.csv', index_col=
 nameOfData='Drought_daily'
 
 data.sort_values('date', axis=0, ascending=True, inplace=True, kind='quicksort', na_position='last', ignore_index=False, key=None)
+#NAO É SUPOSTO MEXER NIST DISSE A PROF 
+#data = data
+#data = aggregate_by(data, 'date', 'D')
+#WIN_SIZE = 1
+#rolling = data.rolling(window=WIN_SIZE)
+#data = rolling.mean()
+
+#.diff().diff() é derivar duas vezes
+#data = data.diff().diff()
 data = data
-data = aggregate_by(data, 'date', 'D')
-WIN_SIZE = 10
-rolling = data.rolling(window=WIN_SIZE)
-date = rolling.mean()
+
+# drop rows with any NaN values
+data = data.dropna()
+
 print(data.head())
 
 def split_dataframe(data, trn_pct=0.70):
@@ -56,6 +65,9 @@ train, test = split_dataframe(data, trn_pct=0.75)
 measure = 'R2'
 flag_pct = False
 eval_results = {}
+
+
+diff_df = data.diff()
 
 #PM
 
@@ -84,10 +96,10 @@ print(eval_results)
 import numpy as np
 
 # Drop missing values from the input arrays
-train.dropna(inplace=True)
-prd_trn = prd_trn[~np.isnan(prd_trn)]
-test.dropna(inplace=True)
-prd_tst = prd_tst[~np.isnan(prd_tst)]
+#train.dropna(inplace=True)
+#prd_trn = prd_trn[~np.isnan(prd_trn)]
+#test.dropna(inplace=True)
+#prd_tst = prd_tst[~np.isnan(prd_tst)]
 
 plot_evaluation_results(train.values, prd_trn, test.values, prd_tst, f'{nameOfData}persisEval')
 savefig( f'entrega6/images/Drought/forecasting/{file_tag}_persistence_eval.png')
