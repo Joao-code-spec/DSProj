@@ -1,7 +1,7 @@
 
 #NOME
 
-nameOfData='Drought_daily'
+nameOfData='Drought_Smoothing_Daily'
 
 from sklearn.base import RegressorMixin
 from ts_functions import PREDICTION_MEASURES, plot_evaluation_results, plot_forecasting_series
@@ -95,7 +95,7 @@ savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_
 
 # Forecasting Smothing
 
-WIN_SIZE = 1600
+WIN_SIZE = 10
 rolling = data.rolling(window=WIN_SIZE)
 smooth_df = rolling.mean()
 train2 = smooth_df
