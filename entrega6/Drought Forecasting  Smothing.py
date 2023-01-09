@@ -14,7 +14,6 @@ from pandas import read_csv, DataFrame
 from matplotlib.pyplot import figure, subplots
 from ts_functions import HEIGHT, split_dataframe
 
-
 #Treino
 
 file_tag = 'Drought_with_smothing'
@@ -48,7 +47,51 @@ measure = 'R2'
 flag_pct = False
 eval_results = {}
 
-#
+#Smoothing
+
+from ts_functions import plot_series, HEIGHT
+
+WIN_SIZE = 1
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 10
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 50
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 100
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+WIN_SIZE = 1600
+rolling = data.rolling(window=WIN_SIZE)
+smooth_df = rolling.mean()
+figure(figsize=(3*HEIGHT, HEIGHT/2))
+plot_series(smooth_df, title=f'Smoothing (win_size={WIN_SIZE})', x_label='timestamp', y_label='consumption')
+xticks(rotation = 45)
+savefig(f'entrega6/images/Drought/forecasting/{nameOfData}_smoothing' + str(WIN_SIZE) + '.png')
+
+# Forecasting Smothing
 
 def aggregate_by(data: Series, index_var: str, period: str):
     index = data.index.to_period(period)
