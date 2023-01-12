@@ -5,19 +5,19 @@ from torch.autograd import Variable
 from ts_functions import split_dataframe, sliding_window
 from sklearn.preprocessing import MinMaxScaler
 
-index='date'
-dataset = 'drought'
+index='Date'
+dataset = 'diabetic'
 
 if dataset == 'diabetic':
     file_tag = 'diabetic'
-    data = read_csv('entrega6/data/glucoseDateTarget', index_col=index, sep=',', decimal='.', parse_dates=True, infer_datetime_format=True)
+    data = read_csv('entrega6/data/glucoseDateTarget.csv', index_col=[0], sep=',', decimal='.', parse_dates=True, infer_datetime_format=True)
     target = 'glucose'
 else:
     file_tag = 'drought'
     data = read_csv('entrega6/data/drought.forecasting_dataset_DROP.csv', index_col=index, sep=',', decimal='.', parse_dates=True, infer_datetime_format=True)
     target = 'QV2M'
 
-data.sort_values('date', axis=0, ascending=True, inplace=True, kind='quicksort', na_position='last', ignore_index=False, key=None)
+data.sort_values('Date', axis=0, ascending=True, inplace=True, kind='quicksort', na_position='last', ignore_index=False, key=None)
 nr_features = 1
 sc = MinMaxScaler()
 data = DataFrame(sc.fit_transform(data), index=data.index, columns=data.columns)
@@ -65,7 +65,7 @@ flag_pct = False
 
 learning_rate = 0.001
 sequence_size = [4, 20, 60, 100]
-nr_hidden_units = [8, 16, 32]
+nr_hidden_units = [1, 2, 3, 4, 8, 10]
 max_iter = [500, 500, 1500, 2500]
 episode_values = [max_iter[0]]
 for el in max_iter[1:]:
@@ -102,7 +102,7 @@ for s in range(len(sequence_size)):
     multiple_line_chart(
         episode_values, values, ax=axs[0, s], title=f'LSTM seq length={length}', xlabel='nr episodes', ylabel=measure, percentage=flag_pct)
 print(f'Best results with seq length={best[0]} hidden={best[1]} episodes={best[2]} ==> measure={last_best:.2f}')
-savefig(f'entrega6/images/{file_tag}/entrega7/{file_tag}_lstm_study.png')
+savefig(f'entrega6/catarina/{file_tag}_lstm_study.png')
 
 trnX, trnY = sliding_window(train, seq_length = best[0])
 trainY = DataFrame(trnY)
@@ -124,7 +124,7 @@ prd_tst = DataFrame(prd_tst)
 prd_tst.index=test.index[best[0]+1:]
 prd_tst.columns = [target]
 
-plot_evaluation_results(trnY.data.numpy(), prd_trn, tstY.data.numpy(), prd_tst, f'entrega6/images/{file_tag}/entrega7/{file_tag}_lstm_eval.png')
-savefig(f'entrega6/images/{file_tag}/entrega7/{file_tag}_lstm_eval.png')
-plot_forecasting_series(trainY, testY, prd_trn.values, prd_tst.values, f'entrega6/images/{file_tag}/entrega7/{file_tag}_lstm_plots.png', x_label=index, y_label=target)
-savefig(f'entrega6/images/{file_tag}/entrega7/{file_tag}_lstm_plots.png')
+plot_evaluation_results(trnY.data.numpy(), prd_trn, tstY.data.numpy(), prd_tst, f'entrega6/catarina/{file_tag}_lstm_eval.png')
+savefig(f'entrega6/catarina/{file_tag}_lstm_eval.png')
+plot_forecasting_series(trainY, testY, prd_trn.values, prd_tst.values, f'entrega6/catarina/{file_tag}_lstm_plots.png', x_label=index, y_label=target)
+savefig(f'entrega6/catarina/{file_tag}_lstm_plots.png')

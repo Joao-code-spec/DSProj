@@ -4,8 +4,10 @@ from torch.autograd import Variable
 from ts_functions import split_dataframe, sliding_window
 from sklearn.preprocessing import MinMaxScaler
 
+
 target = 'QV2M'
 index='date'
+
 
 file_tag = 'drought'
 data = read_csv('entrega6/data/drought.forecasting_dataset_DROP.csv', index_col=index, sep=',', decimal='.', parse_dates=True, infer_datetime_format=True)
